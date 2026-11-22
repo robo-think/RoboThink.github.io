@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoboThink: Let the Agent Think, Let the Policy Act</title>
+<meta name="description" content="A reasoning agent watches the robot and talks to its policy through two channels: what to do, and how to move. The agent thinks, the policy acts.">
+<meta property="og:title" content="RoboThink: Let the Agent Think, Let the Policy Act">
+<meta property="og:description" content="The agent thinks, the policy acts. 0.09 to 0.87 success under an unknown drift on LIBERO, in 55 s per success.">
+<meta property="og:image" content="https://robo-think.github.io/img/teaser.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='8' width='22' height='17' rx='6' fill='%236B5AA6'/%3E%3Ccircle cx='12' cy='16.5' r='3' fill='white'/%3E%3Ccircle cx='20' cy='16.5' r='3' fill='white'/%3E%3Cline x1='16' y1='3' x2='16' y2='8' stroke='%236B5AA6' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0..1,0..1,0..1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #ffffff;
+  --ink: #23262f;
+  --ink-2: #5b6070;
+  --ink-3: #8a8f9c;
+  --rule: #e3e5ec;
+  --band: #f6f5fb;
+  --agent: #6b5aa6;
+  --agent-wash: #ece8f7;
+  --inst: #a8742a;
+  --inst-wash: #fcf1d6;
+  --fb: #3f6a9e;
+  --fb-wash: #e4edf9;
+  --ok: #2f8a62;
+  --bad: #c9443e;
+  --measure: 40rem;
+  --wide: 68rem;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Recursive", ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: "CASL" 0, "MONO" 0, "CRSV" 0.5;
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  font-weight: 380;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--agent); }
+:focus-visible { outline: 2px solid var(--agent); outline-offset: 3px; border-radius: 3px; }
+.wrap { width: 100%; max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem; }
+.prose { max-width: var(--measure); }
+.mono { font-variation-settings: "MONO" 1, "CASL" 0; }
+.casual { font-variation-settings: "CASL" 1, "MONO" 0, "CRSV" 1; }
+.tok { font-variation-settings: "MONO" 1, "CASL" 0; font-weight: 650; font-size: .9em; padding: .05em .35em; border-radius: 4px; white-space: nowrap; }
+.tok.inst { color: var(--inst); background: var(--inst-wash); }
+.tok.fb { color: var(--fb); background: var(--fb-wash); }
+
+/* ---------- head ---------- */
+header.top { padding: 3.5rem 0 2rem; }
+.logo {
+  margin: 0;
+  font-size: clamp(3.4rem, 11vw, 7.5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  font-weight: 820;
+}
+.logo .robo { font-variation-settings: "MONO" 1, "CASL" 0; letter-spacing: -.06em; }
+.logo .think { color: var(--agent); font-variation-settings: "MONO" 0, "CASL" 1, "CRSV" 1, "slnt" -8; display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .logo .think { animation: think 1.6s cubic-bezier(.3,.7,.2,1) .25s both; }
+  @keyframes think {
+    from { font-variation-settings: "MONO" 1, "CASL" 0, "CRSV" 0, "slnt" 0; color: var(--ink); letter-spacing: -.06em; }
+    to   { font-variation-settings: "MONO" 0, "CASL" 1, "CRSV" 1, "slnt" -8; color: var(--agent); letter-spacing: -.02em; }
+  }
+}
+.tagline { margin: 1rem 0 0; font-size: clamp(1.35rem, 2.6vw, 1.8rem); line-height: 1.25; font-weight: 520; max-width: 40ch; }
+.authors { margin: 1.6rem 0 0; font-size: 1.06rem; line-height: 1.75; }
+.authors span { display: inline-block; white-space: nowrap; margin-right: 1.1rem; }
+.authors sup, .affils sup { color: var(--agent); font-weight: 650; font-size: .7em; margin-left: .08em; }
+.affils { margin: .25rem 0 0; color: var(--ink-2); font-size: .95rem; line-height: 1.7; }
+.affils span { display: inline-block; white-space: nowrap; margin-right: 1rem; }
+.links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.6rem; }
+.links a, .links span {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .5rem .95rem; border: 1.5px solid var(--ink); border-radius: 999px;
+  text-decoration: none; font-weight: 560; font-size: .98rem; line-height: 1;
+}
+.links a:hover { background: var(--ink); color: var(--paper); }
+.links span { border-color: var(--rule); color: var(--ink-3); }
+.links svg { width: 1.05em; height: 1.05em; }
+
+/* ---------- the score ---------- */
+.band { background: var(--band); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 2.25rem 0 2.5rem; }
+.lede { margin: 0 0 1.5rem; max-width: var(--measure); font-size: 1.12rem; }
+.controls { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; margin-bottom: 1.25rem; }
+.seg { display: inline-flex; border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px; background: var(--paper); }
+.seg button {
+  font: inherit; font-size: .95rem; font-weight: 560; border: 0; background: none; color: var(--ink);
+  padding: .4rem .9rem; border-radius: 999px; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.play {
+  font: inherit; font-size: .95rem; font-weight: 560; display: inline-flex; align-items: center; gap: .4rem;
+  border: 0; background: none; color: var(--ink-2); cursor: pointer; padding: .4rem .2rem;
+}
+.play:hover { color: var(--ink); }
+.play svg { width: 1rem; height: 1rem; }
+.score { display: grid; grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); gap: 1.75rem; align-items: start; }
+.frame { position: relative; aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: #ddd; }
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .22s linear; }
+.frame img.on { opacity: 1; }
+.verdict { margin-top: .6rem; font-size: .95rem; min-height: 1.6em; color: var(--ink-2); }
+.verdict b { font-weight: 650; }
+.verdict .ok { color: var(--ok); }
+.verdict .bad { color: var(--bad); }
+.task { margin: 0; font-size: 1.05rem; }
+.task q { font-variation-settings: "MONO" 1; font-size: .93em; }
+.cond { margin: .2rem 0 1.1rem; color: var(--ink-2); font-size: .95rem; }
+.lanes { position: relative; padding: .2rem 0 1.4rem; }
+.lane { display: grid; grid-template-columns: 4.2rem 1fr; align-items: center; height: 2rem; }
+.lane .who { font-size: .9rem; color: var(--ink-2); font-weight: 520; }
+.lane.agent .who { color: var(--agent); }
+.track { position: relative; height: 100%; }
+.track .base { position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--rule); }
+.tick { position: absolute; top: 22%; bottom: 22%; width: 2px; margin-left: -1px; background: var(--ink); border-radius: 1px; opacity: .14; }
+.tick.done { opacity: .85; }
+.tick.undo { background: var(--inst); }
+.call {
+  position: absolute; top: 50%; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%;
+  border: 2px solid var(--agent); background: var(--paper);
+}
+.call.done { background: var(--agent); }
+.call.busy { box-shadow: 0 0 0 6px rgba(107, 90, 166, .22); }
+.noagent { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: .88rem; color: var(--ink-3); }
+.head { position: absolute; top: 0; bottom: 1.2rem; width: 2px; margin-left: -1px; background: var(--bad); opacity: .75; pointer-events: none; }
+.axis { display: grid; grid-template-columns: 4.2rem 1fr; font-size: .8rem; color: var(--ink-3); }
+.axis div { display: flex; justify-content: space-between; }
+.thought {
+  margin-top: 1rem; padding: .95rem 1.1rem 1rem; border-radius: 4px 14px 14px 14px;
+  background: var(--paper); border: 1.5px solid var(--agent); min-height: 7.4rem; position: relative;
+}
+.thought .when { font-size: .85rem; color: var(--agent); font-weight: 600; }
+.thought .says { margin: .25rem 0 .45rem; font-size: 1.08rem; line-height: 1.45; font-variation-settings: "CASL" 1, "CRSV" 1, "MONO" 0; }
+.thought .tells { margin: 0; font-size: .98rem; line-height: 1.5; }
+.thought.idle .when { color: var(--ink-3); }
+.thought.idle { border-style: dashed; border-color: var(--rule); }
+.thought .count { position: absolute; right: 1rem; top: .9rem; font-size: .82rem; color: var(--ink-3); }
+
+/* ---------- sections ---------- */
+section { padding: 3.75rem 0 0; }
+h2 { margin: 0 0 1rem; font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.15; font-weight: 720; letter-spacing: -.01em; }
+h3 { margin: 0 0 .35rem; font-size: 1.15rem; font-weight: 680; }
+p { margin: 0 0 1rem; }
+figure { margin: 1.75rem 0 0; }
+figcaption { margin-top: .7rem; max-width: var(--measure); color: var(--ink-2); font-size: .94rem; line-height: 1.55; }
+.channels { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 2.5rem; max-width: 56rem; margin-top: 1.5rem; }
+.channels p { margin: 0; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; margin-top: 1.75rem; }
+.pair figure { margin: 0; }
+.pair img { max-height: 340px; width: auto; }
+table { border-collapse: collapse; width: 100%; max-width: 46rem; font-size: .98rem; margin-top: 1.25rem; }
+caption { text-align: left; caption-side: bottom; color: var(--ink-2); font-size: .92rem; padding-top: .7rem; line-height: 1.55; }
+th, td { padding: .5rem .6rem; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; padding-left: 0; white-space: normal; }
+thead th { font-weight: 600; color: var(--ink-2); font-size: .9rem; border-bottom: 1.5px solid var(--ink); }
+tbody tr.group td { padding-top: 1rem; color: var(--ink-3); font-size: .88rem; border-bottom: 0; }
+tbody tr.us td { font-weight: 680; color: var(--agent); }
+.facts { margin: 1.75rem 0 0; padding: 0; list-style: none; max-width: var(--measure); }
+.facts li { padding: .7rem 0; border-top: 1px solid var(--rule); }
+.facts li:last-child { border-bottom: 1px solid var(--rule); }
+.facts b { font-weight: 650; }
+pre.bib {
+  margin: 1rem 0 0; padding: 1.1rem 1.2rem; background: var(--band); border-radius: 6px; overflow-x: auto;
+  font-size: .86rem; line-height: 1.55; font-variation-settings: "MONO" 1, "CASL" 0; max-width: 48rem;
+}
+.copy { font: inherit; font-size: .9rem; font-weight: 560; margin-top: .7rem; border: 1.5px solid var(--ink); background: none; border-radius: 999px; padding: .35rem .85rem; cursor: pointer; color: var(--ink); }
+.copy:hover { background: var(--ink); color: var(--paper); }
+footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: .9rem; }
+
+@media (max-width: 760px) {
+  header.top { padding-top: 2.75rem; }
+  .score { grid-template-columns: 1fr; }
+  .frame { max-width: 22rem; }
+  .channels, .pair { grid-template-columns: 1fr; }
+  .pair img { max-height: none; width: 100%; }
+  .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll img { min-width: 620px; }
+  .wrap { padding: 0 1rem; }
+  th, td { padding: .45rem .35rem; font-size: .9rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame img { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1 class="logo" aria-label="RoboThink"><span class="robo">Robo</span><span class="think">Think</span></h1>
+    <p class="tagline">Let the agent think, let the policy act.</p>
+    <p class="authors">
+      <span>Yunbei Zhang<sup>1</sup></span><span>Zijian Jin<sup>2</sup></span><span>Janet Wang<sup>1</sup></span><span>Xingchen Zhao<sup>3</sup></span><span>Zhenyu Zhang<sup>4</sup></span><span>Weirui Ye<sup>5</sup></span><span>Yilun Du<sup>6</sup></span>
+    </p>
+    <p class="affils">
+      <span><sup>1</sup>Tulane University</span><span><sup>2</sup>New York University</span><span><sup>3</sup>Northeastern University</span><span><sup>4</sup>Stanford University</span><span><sup>5</sup>Massachusetts Institute of Technology</span><span><sup>6</sup>Harvard University</span>
+    </p>
+    <nav class="links" aria-label="Paper and code">
+      <span title="The paper link will appear here"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 12h6M9 15.5h6"/></svg>Paper (soon)</span>
+      <span title="The arXiv link will appear here"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>arXiv (soon)</span>
+      <a href="https://github.com/robo-think/RoboThink"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.8a10.2 10.2 0 0 0-3.2 19.9c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.3-.3-4.7-1.1-4.7-5a3.9 3.9 0 0 1 1-2.7c-.1-.3-.5-1.3.1-2.8 0 0 .9-.3 2.8 1a9.6 9.6 0 0 1 5.1 0c1.9-1.3 2.8-1 2.8-1 .6 1.5.2 2.5.1 2.8a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.8-4.7 5 .4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5A10.2 10.2 0 0 0 12 1.8z"/></svg>Code</a>
+      <a href="#bibtex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 4H5v16h3M16 4h3v16h-3"/></svg>BibTeX</a>
+    </nav>
+  </div>
+</header>
+
+<div class="band" id="score">
+  <div class="wrap">
+    <p class="lede">A reasoning agent watches the robot. After chunks 1, 2 and 3, and then every fourth chunk, it tells the
+      policy <span class="tok inst">[INST]</span> what to do or <span class="tok fb">[FB]</span> how to move. In between,
+      the policy acts on its own.</p>
+
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Example">
+        <button type="button" data-scene="move" aria-pressed="true">How to move</button>
+        <button type="button" data-scene="what" aria-pressed="false">What to do</button>
+      </div>
+      <div class="seg" role="group" aria-label="Method">
+        <button type="button" data-mode="base" aria-pressed="false">Policy alone</button>
+        <button type="button" data-mode="think" aria-pressed="true">RoboThink</button>
+      </div>
+      <button type="button" class="play" id="play" aria-label="Pause">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><span>Pause</span>
+      </button>
+    </div>
+
+    <div class="score">
+      <div>
+        <div class="frame" id="frame" role="img" aria-label="Front camera of the LIBERO episode"></div>
+        <div class="verdict" id="verdict" aria-live="polite"></div>
+      </div>
+      <div>
+        <p class="task" id="task"></p>
+        <p class="cond" id="cond"></p>
+        <div class="lanes" id="lanes">
+          <div class="lane agent"><div class="who">agent</div><div class="track" id="agentTrack"><div class="base"></div></div></div>
+          <div class="lane"><div class="who">policy</div><div class="track" id="policyTrack"><div class="base"></div></div></div>
+          <div class="axis"><span></span><div><span>step 0</span><span>200</span><span>400</span></div></div>
+          <div class="head" id="head"></div>
+        </div>
+        <div class="thought idle" id="thought" aria-live="polite">
+          <div class="when" id="when"></div>
+          <p class="says" id="says"></p>
+          <p class="tells" id="tells"></p>
+          <div class="count" id="count"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section id="abstract">
+    <h2>Abstract</h2>
+    <div class="prose">
+      <p>Robot policies act in real time but fail without knowing why, whereas a reasoning agent that watches the robot
+        can often tell what went wrong. Existing systems either hand the agent control, which takes minutes per episode,
+        or let it send instructions. Yet a policy follows a new instruction only from a fresh start, since a
+        half-finished task leaves it in states outside its training data. Nor can an instruction fix how the robot
+        moves. If a small drift on its motion commands keeps pulling the hand to the left, feedback such as “push right,
+        slightly” is not a task the policy has learned to follow.</p>
+      <p>We propose RoboThink, in which the agent thinks and the policy learns to act on the agent’s guidance. An
+        instruction channel tells the policy what to do. When the user says “the milk, not the butter” after the robot
+        has started, the agent rewrites the instruction and the robot undoes its own motion, with no training. A feedback
+        channel tells it how to move. It is taught from the agent alone with agent-labelled DAgger, role tokens and
+        counterfactual feedback, and is read only by the policy’s action module.</p>
+      <p>On LIBERO, RoboThink with Claude Opus 5.5 raises success from 0.09 to 0.87 under an unknown constant drift and
+        from 0.42 to 0.84 under a random one. It also completes misheard and changed requests in 0.91 to 1.00 of the
+        episodes. GPT-6 Astra, the strongest agent we tested, needs 2.1 min per success and over a million tokens per
+        episode when acting alone, whereas RoboThink needs 55 s and 8k tokens. The same recipe works across policies,
+        for both vision-language-action models and world action models, and across robots, from one arm to two arms and
+        a mobile manipulator. On all 50 RoboTwin 2.0 tasks with two arms, success rises from 0.12 to 0.74 under the
+        constant drift and from 0.31 to 0.56 under the random one. Finally, the agent is a plug-in. A policy taught by
+        one agent works with other agents, including open-weight ones, and grows stronger with a stronger agent, without
+        retraining.</p>
+    </div>
+  </section>
+
+  <section id="method">
+    <h2>Two channels from the agent to the policy</h2>
+    <div class="channels">
+      <div>
+        <h3><span class="tok inst">[INST]</span> What to do</h3>
+        <p>The agent rewrites the instruction when the request is unclear, misheard or changed. If the robot has already
+          started on the wrong task, it first retraces its own motion, then acts on the new instruction. No training.</p>
+      </div>
+      <div>
+        <h3><span class="tok fb">[FB]</span> How to move</h3>
+        <p>The agent compares the commanded and the actual motion of the hand and says what to correct, in words such as
+          “push back slightly to the right”. Only the policy’s action module reads it.</p>
+      </div>
+    </div>
+    <figure>
+      <div class="scroll"><img src="img/teaser.png" alt="Three ways to combine an agent and a policy: the agent takes over, the agent instructs, and RoboThink, where the agent sends [INST] and [FB] to the policy." width="1998" height="821"></div>
+      <figcaption>The agent can take over, which is slow, or instruct, which works only from a fresh start and cannot say
+        how to move. In RoboThink the agent thinks and the policy acts, through both channels.</figcaption>
+    </figure>
+  </section>
+
+  <section id="training">
+    <h2>Teaching the policy to listen</h2>
+    <div class="prose">
+      <p>A policy does not follow “push right, slightly” on its own: it reacts to the presence of the text, not to what
+        it says. We teach it from the agent alone. During rollouts on the training tasks, the robot executes its own plan
+        corrected by the agent’s estimate of the drift, and every step is stored with the feedback in force. Role tokens
+        make the feedback a separate segment, counterfactual feedback makes the policy read it, and only the action
+        module is trained.</p>
+    </div>
+    <figure>
+      <div class="scroll"><img src="img/train.png" alt="Training: rollouts with the agent, training samples with real, counterfactual and no feedback, and fine-tuning of the action module and role tokens." width="1889" height="478"></div>
+      <figcaption>One state gives three training samples: the agent’s feedback with its corrected target, a
+        counterfactual feedback with its own target (p = 0.5), and no feedback with the plain plan (p = 0.1).</figcaption>
+    </figure>
+    <figure>
+      <div class="scroll"><img src="img/follow_probe.png" alt="Probe of the first planned chunk with and without feedback, for Fast-WAM, DAgger alone and RoboThink." width="1732" height="607"></div>
+      <figcaption>Does the policy do what the feedback says? Fast-WAM moves the same way for opposite feedback. RoboThink
+        follows it (cosine 0.95, gain 0.90) and moves the other way when the feedback is reversed.</figcaption>
+    </figure>
+  </section>
+
+  <section id="results">
+    <h2>Thinking along beats acting alone</h2>
+    <div class="prose">
+      <p>On the same episodes under an unknown drift, RoboThink succeeds at least as often as the agents acting alone,
+        in a fraction of their time and tokens. The agent is called only a few times per episode, and between calls the
+        policy acts at its own rate.</p>
+    </div>
+    <table>
+      <thead>
+        <tr><th scope="col"></th><th scope="col">Constant</th><th scope="col">Random</th><th scope="col">Time</th><th scope="col">Tokens</th></tr>
+      </thead>
+      <tbody>
+        <tr class="group"><td colspan="5">LIBERO, one arm</td></tr>
+        <tr><td>Policy alone (Fast-WAM)</td><td>0.09</td><td>0.42</td><td>11 s</td><td>0</td></tr>
+        <tr><td>Agent alone (GPT-6 Astra)</td><td>0.78</td><td>0.84</td><td>2.1 min</td><td>1.2 M</td></tr>
+        <tr><td>Agent alone (Claude Opus 5.5)</td><td>0.53</td><td>0.58</td><td>2.3 min</td><td>759 k</td></tr>
+        <tr class="us"><td>RoboThink (Claude Opus 5.5)</td><td>0.87</td><td>0.84</td><td>55 s</td><td>8 k</td></tr>
+        <tr class="group"><td colspan="5">RoboTwin 2.0, two arms</td></tr>
+        <tr><td>Policy alone (Fast-WAM)</td><td>0.07</td><td>0.30</td><td>18 s</td><td>0</td></tr>
+        <tr><td>Agent alone (GPT-6 Astra)</td><td>0.45</td><td>0.36</td><td>4.2 min</td><td>2.8 M</td></tr>
+        <tr><td>Agent alone (Claude Opus 5.5)</td><td>0.30</td><td>0.20</td><td>3.7 min</td><td>1.1 M</td></tr>
+        <tr class="us"><td>RoboThink (Claude Opus 5.5)</td><td>0.73</td><td>0.48</td><td>33 s</td><td>10 k</td></tr>
+      </tbody>
+      <caption>Success rate under a constant and a random drift on the motion commands. Time: median wall-clock time to
+        success, agent calls included. Tokens: agent input tokens per episode.</caption>
+    </table>
+
+    <div class="pair">
+      <figure>
+        <img src="img/time_budget.png" alt="Share of LIBERO drift episodes solved within a wall-clock budget." width="730" height="631">
+        <figcaption>Within one minute per episode, RoboThink solves 0.53 of the drift episodes; the agents alone solve
+          almost none.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/agent_scaling.png" alt="Success under drift against agent accuracy for ten agents; Pearson r = 0.96." width="927" height="594">
+        <figcaption>One policy, ten agents, no retraining. Every agent helps, and success grows with the accuracy of the
+          agent (r = 0.96).</figcaption>
+      </figure>
+    </div>
+
+    <ul class="facts">
+      <li><b>What to do.</b> With <span class="tok inst">[INST]</span> and undo before redo, misheard and changed requests
+        are completed in 0.91 to 1.00 of the episodes, also by Cosmos Policy off the shelf.</li>
+      <li><b>Two arms, all 50 tasks.</b> Under the official RoboTwin 2.0 protocol, success rises from 0.12 to 0.74 under the
+        constant drift and from 0.31 to 0.56 under the random one, with no cost without drift.</li>
+      <li><b>Other policies and robots.</b> The same recipe teaches a VLA (GR00T N1.7: 0.02 to 0.53 and 0.24 to 0.70) and
+        a mobile manipulator in unseen kitchens (Cosmos Policy on RoboCasa).</li>
+    </ul>
+  </section>
+
+  <section id="bibtex">
+    <h2>BibTeX</h2>
+<pre class="bib" id="bib">@article{zhang2026robothink,
+  title   = {RoboThink: Let the Agent Think, Let the Policy Act},
+  author  = {Zhang, Yunbei and Jin, Zijian and Wang, Janet and Zhao, Xingchen
+             and Zhang, Zhenyu and Ye, Weirui and Du, Yilun},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+    <button type="button" class="copy" id="copy">Copy BibTeX</button>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">RoboThink, 2026. Simulation frames from LIBERO.</div>
+</footer>
+
+<script>
+(() => {
+  const BUDGET = 400, RATE = 55, THINK_MS = 750, HOLD_MS = 2600;
+  const FB_QUOTE = {
+    says: "“The hand … ended up about 1.6 cm too far left … with extra roll and yaw of about 6 degrees … a constant actuator bias.”",
+    tells: '<span class="tok fb">[FB]</span> “Push back moderately to the robot’s right and slightly upward. Turn the wrist back …”'
+  };
+  const INST_QUOTE = {
+    says: "The robot reaches for an object the user did not ask for.",
+    tells: '<span class="tok inst">[INST]</span> “pick up the milk and place it in the basket”, then the robot retraces its two chunks with the gripper open.'
+  };
+  const SCENES = {
+    move: {
+      task: 'Told <q>pick up the orange juice and place it in the basket</q>',
+      cond: "An unknown constant drift is added to every motion command.",
+      labels: ["Policy alone", "RoboThink"],
+      base: { img: "a_policy", steps: [0, 20, 50, 100, 400], end: 400, ok: false,
+              verdict: '<b class="bad">Fails.</b> The hand twists away from the bottle.' },
+      think: { img: "a_think", steps: [0, 20, 50, 80, 118], end: 118, ok: true,
+               verdict: '<b class="ok">Success</b> at step 118, with five agent calls.',
+               calls: [{ c: 1, q: FB_QUOTE }, { c: 2 }, { c: 3 }, { c: 7 }, { c: 11 }], undo: [] }
+    },
+    what: {
+      task: 'Told <q>pick up the cream cheese and place it in the basket</q>; the user wants the milk.',
+      cond: "No drift. Only the agent knows the user’s request.",
+      labels: ["As told", "RoboThink"],
+      base: { img: "b_told", steps: [0, 60, 120, 280, 400], end: 400, ok: false,
+              verdict: '<b class="bad">Wrong object.</b> The robot delivers the cream cheese.' },
+      think: { img: "b_think", steps: [0, 20, 40, 100, 166], end: 166, ok: true,
+               verdict: '<b class="ok">Success</b> at step 166: two chunks undone, then the milk.',
+               calls: [{ c: 1 }, { c: 2, q: INST_QUOTE }, { c: 7 }, { c: 11 }, { c: 15 }], undo: [3, 4] }
+    }
+  };
+  const $ = (id) => document.getElementById(id);
+  const frame = $("frame"), agentTrack = $("agentTrack"), policyTrack = $("policyTrack"), head = $("head");
+  const thought = $("thought"), when = $("when"), says = $("says"), tells = $("tells"), count = $("count");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let scene = "move", mode = "think", step = 0, raf = 0, last = 0, wait = 0, playing = !reduce, visible = true, seen = new Set();
+
+  const ep = () => SCENES[scene][mode];
+  const pct = (s) => (100 * s / BUDGET) + "%";
+
+  function build() {
+    const S = SCENES[scene], E = ep();
+    $("task").innerHTML = S.task;
+    $("cond").textContent = S.cond;
+    document.querySelectorAll("[data-mode]").forEach((b, i) => { b.textContent = S.labels[i]; });
+    frame.innerHTML = "";
+    E.steps.forEach((s, i) => {
+      const im = new Image();
+      im.src = `img/${E.img}_${i}.jpg`;
+      im.alt = `step ${s}`;
+      im.width = 384; im.height = 384;
+      frame.appendChild(im);
+    });
+    agentTrack.querySelectorAll(".call,.noagent").forEach((n) => n.remove());
+    policyTrack.querySelectorAll(".tick").forEach((n) => n.remove());
+    for (let c = 0; c < BUDGET / 10; c++) {
+      const t = document.createElement("i");
+      t.className = "tick" + (E.undo && E.undo.includes(c + 1) ? " undo" : "");
+      t.style.left = pct(c * 10 + 5);
+      t.dataset.end = (c + 1) * 10;
+      policyTrack.appendChild(t);
+    }
+    if (E.calls) {
+      E.calls.forEach((k, i) => {
+        const d = document.createElement("i");
+        d.className = "call";
+        d.style.left = pct(k.c * 10);
+        d.dataset.i = i;
+        agentTrack.appendChild(d);
+      });
+    } else {
+      const n = document.createElement("span");
+      n.className = "noagent";
+      n.textContent = "no agent";
+      agentTrack.appendChild(n);
+    }
+    reset();
+  }
+
+  function reset() {
+    step = 0; wait = 0; seen = new Set();
+    if (!playing) step = ep().end;
+    render();
+  }
+
+  function render() {
+    const E = ep();
+    const imgs = frame.querySelectorAll("img");
+    let k = 0;
+    E.steps.forEach((s, i) => { if (step >= s) k = i; });
+    imgs.forEach((im, i) => im.classList.toggle("on", i === k));
+    head.style.left = `calc(4.2rem + (100% - 4.2rem) * ${Math.min(step, BUDGET) / BUDGET})`;
+    policyTrack.querySelectorAll(".tick").forEach((t) => {
+      t.classList.toggle("done", +t.dataset.end <= Math.ceil(step / 10) * 10 && +t.dataset.end <= Math.ceil(E.end / 10) * 10);
+    });
+    let lastCall = -1, lastQuote = null, busy = null;
+    agentTrack.querySelectorAll(".call").forEach((d) => {
+      const i = +d.dataset.i, c = E.calls[i];
+      const passed = step >= c.c * 10, isBusy = wait > 0 && c.c * 10 === step;
+      d.classList.toggle("done", passed && !isBusy);
+      d.classList.toggle("busy", isBusy);
+      if (isBusy) busy = c;
+      if (passed) { lastCall = i; if (c.q) lastQuote = c; }
+    });
+    const done = step >= E.end;
+    $("verdict").innerHTML = done ? E.verdict : "";
+    if (!E.calls) {
+      thought.classList.add("idle");
+      when.textContent = "No agent: the policy runs on the instruction it was given.";
+      says.textContent = ""; tells.innerHTML = ""; count.textContent = "";
+    } else if (busy && busy.q) {
+      thought.classList.remove("idle");
+      when.textContent = `Agent, after chunk ${busy.c}`;
+      says.textContent = "thinking …"; tells.innerHTML = "";
+      count.textContent = `call ${lastCall + 1} of ${E.calls.length}`;
+    } else if (lastQuote) {
+      thought.classList.remove("idle");
+      when.textContent = `Agent, after chunk ${lastQuote.c}`;
+      says.textContent = lastQuote.q.says;
+      tells.innerHTML = lastQuote.q.tells;
+      count.textContent = `call ${lastCall + 1} of ${E.calls.length}`;
+    } else {
+      thought.classList.add("idle");
+      when.textContent = lastCall >= 0 ? "Agent, after chunk 1: nothing to change yet." : "The agent waits for the first chunk.";
+      says.textContent = ""; tells.innerHTML = "";
+      count.textContent = lastCall >= 0 ? `call ${lastCall + 1} of ${E.calls.length}` : "";
+    }
+  }
+
+  function tick(t) {
+    raf = requestAnimationFrame(tick);
+    if (!last) last = t;
+    let dt = Math.min(t - last, 100);
+    last = t;
+    if (!playing || !visible) return;
+    const E = ep();
+    if (wait > 0) { wait -= dt; render(); return; }
+    if (step >= E.end) {
+      wait = -1;
+      if (!tick.hold) tick.hold = t;
+      if (t - tick.hold > HOLD_MS) { tick.hold = 0; reset(); }
+      return;
+    }
+    const next = step + dt * RATE / 1000;
+    const call = E.calls && E.calls.find((c) => c.c * 10 > step && c.c * 10 <= next && !seen.has(c.c));
+    if (call) { step = call.c * 10; seen.add(call.c); wait = THINK_MS; }
+    else step = Math.min(next, E.end);
+    render();
+  }
+
+  function setPlaying(p) {
+    playing = p;
+    const b = $("play");
+    b.setAttribute("aria-label", p ? "Pause" : "Play");
+    b.querySelector("span").textContent = p ? "Pause" : "Play";
+    b.querySelector("svg").innerHTML = p
+      ? '<rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/>'
+      : '<path d="M4 2.2v11.6a.8.8 0 0 0 1.2.7l9.3-5.8a.8.8 0 0 0 0-1.4L5.2 1.5A.8.8 0 0 0 4 2.2z"/>';
+    if (p && step >= ep().end) reset();
+    if (!p) render();
+  }
+
+  document.querySelectorAll("[data-scene]").forEach((b) => b.addEventListener("click", () => {
+    scene = b.dataset.scene;
+    document.querySelectorAll("[data-scene]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    build();
+  }));
+  document.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => {
+    mode = b.dataset.mode;
+    document.querySelectorAll("[data-mode]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    build();
+  }));
+  $("play").addEventListener("click", () => setPlaying(!playing));
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe($("score"));
+  }
+  $("copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("bib").textContent); $("copy").textContent = "Copied"; }
+    catch (e) { $("copy").textContent = "Select the text to copy"; }
+    setTimeout(() => { $("copy").textContent = "Copy BibTeX"; }, 1800);
+  });
+  setPlaying(playing);
+  build();
+  raf = requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
