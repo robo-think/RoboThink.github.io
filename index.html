@@ -28,7 +28,7 @@
   --fb-wash: #e4edf9;
   --ok: #2f8a62;
   --bad: #c9443e;
-  --measure: 40rem;
+  --measure: 100%;
   --wide: 68rem;
   color-scheme: light;
 }
@@ -93,7 +93,7 @@ header.top { padding: 3.5rem 0 2rem; }
 
 /* ---------- the score ---------- */
 .band { background: var(--band); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 2.25rem 0 2.5rem; }
-.lede { margin: 0 0 1.5rem; max-width: var(--measure); font-size: 1.12rem; }
+.lede { margin: 0 0 1.5rem; font-size: 1.12rem; }
 .controls { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: center; margin-bottom: 1.25rem; }
 .seg { display: inline-flex; border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px; background: var(--paper); }
 .seg button {
@@ -160,7 +160,7 @@ figcaption { margin-top: .7rem; max-width: var(--measure); color: var(--ink-2); 
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; margin-top: 1.75rem; }
 .pair figure { margin: 0; }
 .pair img { max-height: 340px; width: auto; }
-table { border-collapse: collapse; width: 100%; max-width: 46rem; font-size: .98rem; margin-top: 1.25rem; }
+table { border-collapse: collapse; width: 100%; font-size: .98rem; margin-top: 1.25rem; }
 caption { text-align: left; caption-side: bottom; color: var(--ink-2); font-size: .92rem; padding-top: .7rem; line-height: 1.55; }
 th, td { padding: .5rem .6rem; text-align: right; border-bottom: 1px solid var(--rule); white-space: nowrap; font-variant-numeric: tabular-nums; }
 th:first-child, td:first-child { text-align: left; padding-left: 0; white-space: normal; }
@@ -173,17 +173,93 @@ tbody tr.us td { font-weight: 680; color: var(--agent); }
 .facts b { font-weight: 650; }
 pre.bib {
   margin: 1rem 0 0; padding: 1.1rem 1.2rem; background: var(--band); border-radius: 6px; overflow-x: auto;
-  font-size: .86rem; line-height: 1.55; font-variation-settings: "MONO" 1, "CASL" 0; max-width: 48rem;
+  font-size: .86rem; line-height: 1.55; font-variation-settings: "MONO" 1, "CASL" 0;
 }
 .copy { font: inherit; font-size: .9rem; font-weight: 560; margin-top: .7rem; border: 1.5px solid var(--ink); background: none; border-radius: 999px; padding: .35rem .85rem; cursor: pointer; color: var(--ink); }
 .copy:hover { background: var(--ink); color: var(--paper); }
 footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: .9rem; }
+
+/* ---------- method diagram ---------- */
+.scrolly { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 2.5rem; margin-top: 1rem; }
+.steps { padding-bottom: 0; }
+.step:last-child { min-height: 48vh; }
+.step { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; color: var(--ink-3); transition: color .3s; }
+.step:first-child { min-height: 46vh; justify-content: flex-start; padding-top: 2rem; }
+.step.on { color: var(--ink); }
+.step h3 { font-size: 1.3rem; }
+.step.on h3 { color: var(--agent); }
+.step .tok { opacity: .6; transition: opacity .3s; }
+.step.on .tok { opacity: 1; }
+.stage { position: sticky; top: 9vh; align-self: start; padding-top: 1rem; }
+.dia { width: 100%; height: auto; display: block; overflow: visible; }
+.dia text { font-family: inherit; }
+.ag-line { stroke: var(--agent); stroke-width: 2.5; }
+.ag-fill { fill: var(--agent); }
+.ag-body { fill: #e4def5; stroke: var(--agent); stroke-width: 2.5; }
+.eye { fill: #fff; stroke: #2b2b2b; stroke-width: 2; }
+.pupil { fill: #2b2b2b; }
+.mouth { fill: none; stroke: #2b2b2b; stroke-width: 2; stroke-linecap: round; }
+.ag-label { fill: var(--agent); font-size: 15px; font-weight: 600; font-variation-settings: "CASL" 1, "CRSV" 1; }
+.bubble { stroke-width: 2; transition: fill .35s, stroke .35s; }
+.s1 .bubble { fill: #ece8f7; stroke: var(--agent); }
+.s2 .bubble { fill: #fdf1cf; stroke: #d6b95c; }
+.s3 .bubble { fill: #fff; stroke: var(--agent); }
+.code { font-size: 20px; fill: #3b2f63; font-variation-settings: "MONO" 1, "CASL" 0; }
+.say-inst { font-size: 21px; fill: #6f4c12; }
+.t-tok { font-variation-settings: "MONO" 1, "CASL" 0; font-weight: 700; }
+.t-inst { fill: var(--inst); font-size: 21px; }
+.t-fb { fill: var(--fb); font-size: 21px; }
+.pol-box { stroke-width: 2; transition: fill .35s, stroke .35s; fill: #f2f2f2; stroke: #8f949c; }
+.s3 .pol-box { fill: #eaf0f8; stroke: #7091c0; }
+.mod { fill: #fff; stroke: #6d7179; stroke-width: 1.8; transition: fill .35s, stroke .35s; }
+.s3 .world { fill: #ececec; }
+.s3 .action { fill: #d9e7fa; stroke: var(--fb); }
+.mod-t { font-size: 20px; fill: var(--ink); }
+.pol-t { font-size: 19px; font-weight: 700; fill: var(--ink); }
+.policy { transition: opacity .35s; }
+.s1 .policy { opacity: .32; }
+.sub { font-size: 13px; fill: var(--ink-2); }
+.sub-fb { fill: var(--fb); font-weight: 650; }
+.thin { stroke: #8f949c; stroke-width: 1.6; }
+.thin-head { fill: #8f949c; }
+.ground { stroke: #4d70a8; stroke-width: 2.5; stroke-linecap: round; }
+.base { fill: #ececec; stroke: #6d7179; stroke-width: 1.8; }
+.link { stroke: #b9bcc0; stroke-width: 9; stroke-linecap: round; }
+.joint { fill: #fff; stroke: #2b2b2b; stroke-width: 2; }
+.grip { fill: none; stroke: #2b2b2b; stroke-width: 2.5; stroke-linecap: round; }
+.obj { fill: #fef1cc; stroke: #d6b95c; stroke-width: 1.8; }
+.note { font-size: 16px; font-style: italic; fill: var(--ink-3); font-variation-settings: "CASL" 1, "slnt" -10; }
+.note-fb { fill: var(--fb); }
+.draw { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.a-agent { stroke: var(--agent); } .h-agent { fill: var(--agent); }
+.a-inst { stroke: var(--inst); } .h-inst { fill: var(--inst); }
+.a-fb { stroke: var(--fb); } .h-fb { fill: var(--fb); }
+.a-ink { stroke: #6d7179; } .h-ink { fill: #6d7179; }
+.layer { opacity: 0; transition: opacity .3s; }
+.s1 .l1, .s2 .l2, .s3 .l3, .s2 .l23, .s3 .l23 { opacity: 1; }
+.s1 .l1 .draw, .s2 .l2 .draw, .s3 .l3 .draw, .s2 .l23 .draw, .s3 .l23 .draw { animation: draw .75s cubic-bezier(.4,.1,.2,1) .1s forwards; }
+.head { opacity: 0; transition: opacity .2s; }
+.s1 .l1 .head, .s2 .l2 .head, .s3 .l3 .head, .s2 .l23 .head, .s3 .l23 .head { opacity: 1; transition-delay: .75s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.verdict-row { position: relative; min-height: 2rem; margin-top: .4rem; }
+.layer-t { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; transition: opacity .3s; }
+.layer-t.on { opacity: 1; position: relative; }
+.layer-t .ok { color: var(--ok); } .layer-t .bad { color: var(--bad); }
+.stepper { margin-top: .9rem; }
+@media (prefers-reduced-motion: reduce) {
+  .draw, .s1 .l1 .draw, .s2 .l2 .draw, .s3 .l3 .draw, .s2 .l23 .draw, .s3 .l23 .draw { animation: none; stroke-dashoffset: 0; }
+  .layer, .head, .layer-t, .step, .bubble, .pol-box, .mod, .policy { transition: none; }
+}
 
 @media (max-width: 760px) {
   header.top { padding-top: 2.75rem; }
   .score { grid-template-columns: 1fr; }
   .frame { max-width: 22rem; }
   .channels, .pair { grid-template-columns: 1fr; }
+  .scrolly { grid-template-columns: 1fr; gap: 0; }
+  .stage { order: -1; top: 0; z-index: 2; background: var(--paper); padding: .6rem 0 .6rem; border-bottom: 1px solid var(--rule); }
+  .stepper { display: none; }
+  .step, .step:first-child { min-height: 55vh; padding-top: 1rem; justify-content: flex-start; }
   .pair img { max-height: none; width: 100%; }
   .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .scroll img { min-width: 620px; }
@@ -205,7 +281,7 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
       <span>Yunbei Zhang<sup>1</sup></span><span>Zijian Jin<sup>2</sup></span><span>Janet Wang<sup>1</sup></span><span>Xingchen Zhao<sup>3</sup></span><span>Zhenyu Zhang<sup>4</sup></span><span>Weirui Ye<sup>5</sup></span><span>Yilun Du<sup>6</sup></span>
     </p>
     <p class="affils">
-      <span><sup>1</sup>Tulane University</span><span><sup>2</sup>New York University</span><span><sup>3</sup>Northeastern University</span><span><sup>4</sup>Stanford University</span><span><sup>5</sup>Massachusetts Institute of Technology</span><span><sup>6</sup>Harvard University</span>
+      <span><sup>1</sup>Tulane University</span><span><sup>2</sup>New York University</span><span><sup>3</sup>Northeastern University</span><span><sup>4</sup>Stanford University</span><span><sup>5</sup>MIT</span><span><sup>6</sup>Harvard University</span>
     </p>
     <nav class="links" aria-label="Paper and code">
       <span title="The paper link will appear here"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 12h6M9 15.5h6"/></svg>Paper (soon)</span>
@@ -266,47 +342,125 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
     <h2>Abstract</h2>
     <div class="prose">
       <p>Robot policies act in real time but fail without knowing why, whereas a reasoning agent that watches the robot
-        can often tell what went wrong. Existing systems either hand the agent control, which takes minutes per episode,
-        or let it send instructions. Yet a policy follows a new instruction only from a fresh start, since a
-        half-finished task leaves it in states outside its training data. Nor can an instruction fix how the robot
-        moves. If a small drift on its motion commands keeps pulling the hand to the left, feedback such as “push right,
-        slightly” is not a task the policy has learned to follow.</p>
-      <p>We propose RoboThink, in which the agent thinks and the policy learns to act on the agent’s guidance. An
-        instruction channel tells the policy what to do. When the user says “the milk, not the butter” after the robot
-        has started, the agent rewrites the instruction and the robot undoes its own motion, with no training. A feedback
-        channel tells it how to move. It is taught from the agent alone with agent-labelled DAgger, role tokens and
-        counterfactual feedback, and is read only by the policy’s action module.</p>
+        can often tell what went wrong. Handing the agent control takes minutes per episode, and an instruction neither
+        restarts a half-finished task nor fixes how the robot moves. In RoboThink the agent thinks and the policy acts.
+        An instruction channel tells the policy what to do, with no training. A feedback channel tells it how to move;
+        it is taught from the agent alone with agent-labelled DAgger, role tokens and counterfactual feedback, and is
+        read only by the policy’s action module.</p>
       <p>On LIBERO, RoboThink with Claude Opus 5.5 raises success from 0.09 to 0.87 under an unknown constant drift and
-        from 0.42 to 0.84 under a random one. It also completes misheard and changed requests in 0.91 to 1.00 of the
-        episodes. GPT-6 Astra, the strongest agent we tested, needs 2.1 min per success and over a million tokens per
-        episode when acting alone, whereas RoboThink needs 55 s and 8k tokens. The same recipe works across policies,
-        for both vision-language-action models and world action models, and across robots, from one arm to two arms and
-        a mobile manipulator. On all 50 RoboTwin 2.0 tasks with two arms, success rises from 0.12 to 0.74 under the
-        constant drift and from 0.31 to 0.56 under the random one. Finally, the agent is a plug-in. A policy taught by
-        one agent works with other agents, including open-weight ones, and grows stronger with a stronger agent, without
-        retraining.</p>
+        from 0.42 to 0.84 under a random one, in 55 s per success, where GPT-6 Astra acting alone needs 2.1 min. It
+        completes misheard and changed requests in 0.91 to 1.00 of the episodes, carries over to other policies and
+        robots, and grows stronger with a stronger agent, without retraining.</p>
     </div>
   </section>
 
   <section id="method">
-    <h2>Two channels from the agent to the policy</h2>
-    <div class="channels">
-      <div>
-        <h3><span class="tok inst">[INST]</span> What to do</h3>
-        <p>The agent rewrites the instruction when the request is unclear, misheard or changed. If the robot has already
-          started on the wrong task, it first retraces its own motion, then acts on the new instruction. No training.</p>
+    <h2>From taking over to thinking along</h2>
+    <div class="scrolly">
+      <div class="steps">
+        <article class="step on" data-step="1">
+          <h3>(a) The agent takes over</h3>
+          <p>Agents that act as the policy control the robot through code, so every motion waits for the agent to
+            think. It works, but slowly: acting alone, GPT-6 Astra needs 2.1 min and over a million tokens per
+            successful episode.</p>
+        </article>
+        <article class="step" data-step="2">
+          <h3>(b) The agent instructs</h3>
+          <p>The agent sends a new instruction and the policy acts on it. Yet a policy follows a new instruction only
+            from a fresh start, since a half-finished task leaves it in states outside its training data. Nor can an
+            instruction fix how the robot moves: “push right, slightly” is not a task the policy has learned.</p>
+        </article>
+        <article class="step" data-step="3">
+          <h3>(c) RoboThink</h3>
+          <p>The agent thinks and the policy acts. <span class="tok inst">[INST]</span> tells the policy what to do:
+            the agent rewrites the instruction, and the robot first undoes its own motion, with no training.
+            <span class="tok fb">[FB]</span> tells it how to move: it is taught from the agent alone and read only by
+            the action module, while the world module keeps the plain instruction.</p>
+          <p>55 s and 8k tokens per success.</p>
+        </article>
       </div>
-      <div>
-        <h3><span class="tok fb">[FB]</span> How to move</h3>
-        <p>The agent compares the commanded and the actual motion of the hand and says what to correct, in words such as
-          “push back slightly to the right”. Only the policy’s action module reads it.</p>
+      <div class="stage">
+        <svg class="dia s1" id="dia" viewBox="0 0 660 384" role="img" aria-labelledby="diaTitle">
+          <title id="diaTitle">How the agent reaches the robot in three designs</title>
+          <!-- agent -->
+          <g transform="translate(26,30)">
+            <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/>
+            <circle cx="36" cy="2" r="4.5" class="ag-fill"/>
+            <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/>
+            <rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
+            <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
+            <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
+            <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
+            <path d="M27 52 q9 7 18 0" class="mouth"/>
+          </g>
+          <text x="62" y="122" text-anchor="middle" class="ag-label">reasoning agent</text>
+          <!-- speech bubble -->
+          <rect x="128" y="22" width="372" height="80" rx="12" class="bubble"/>
+          <g class="layer l1"><text x="150" y="55" class="code">move_to(0.4, 0.1)</text><text x="150" y="83" class="code">grip()</text></g>
+          <g class="layer l2"><text x="314" y="70" text-anchor="middle" class="say-inst">“put the milk in the basket”</text></g>
+          <g class="layer l3">
+            <text x="150" y="55"><tspan class="t-inst t-tok">[INST]</tspan><tspan class="t-inst"> fetch the milk</tspan></text>
+            <text x="150" y="85"><tspan class="t-fb t-tok">[FB]</tspan><tspan class="t-fb"> push right, slightly</tspan></text>
+          </g>
+          <!-- policy -->
+          <g class="policy">
+            <rect x="34" y="226" width="392" height="146" rx="12" class="pol-box"/>
+            <rect x="60" y="250" width="144" height="52" rx="10" class="mod world"/>
+            <text x="132" y="282" text-anchor="middle" class="mod-t">world</text>
+            <rect x="256" y="250" width="144" height="52" rx="10" class="mod action"/>
+            <text x="328" y="282" text-anchor="middle" class="mod-t">action</text>
+            <line x1="206" y1="276" x2="246" y2="276" class="thin"/><path d="M246 271 l8 5 l-8 5z" class="thin-head"/>
+            <text x="230" y="358" text-anchor="middle" class="pol-t">robot policy</text>
+            <g class="layer l3"><text x="132" y="322" text-anchor="middle" class="sub">frozen</text><text x="328" y="322" text-anchor="middle" class="sub sub-fb">trained</text></g>
+          </g>
+          <!-- robot -->
+          <line x1="468" y1="372" x2="648" y2="372" class="ground"/>
+          <rect x="498" y="350" width="48" height="22" rx="3" class="base"/>
+          <line x1="522" y1="350" x2="510" y2="262" class="link"/>
+          <line x1="510" y1="262" x2="594" y2="232" class="link"/>
+          <circle cx="522" cy="350" r="6" class="joint"/><circle cx="510" cy="262" r="6" class="joint"/><circle cx="594" cy="232" r="6" class="joint"/>
+          <path d="M594 238 V252 M582 252 H606 M582 252 V268 M606 252 V268" class="grip"/>
+          <rect x="604" y="352" width="24" height="20" rx="2" class="obj"/>
+          <!-- (a) the agent acts itself -->
+          <g class="layer l1">
+            <text x="230" y="214" text-anchor="middle" class="note">policy not used</text>
+            <path d="M470 102 C 470 170, 594 160, 594 214" class="draw a-agent" pathLength="1"/>
+            <path d="M588 206 L594 218 L600 206 Z" class="head h-agent"/>
+          </g>
+          <!-- policy acts on the robot -->
+          <g class="layer l23">
+            <line x1="428" y1="294" x2="470" y2="294" class="draw a-ink" pathLength="1"/>
+            <path d="M466 288 L478 294 L466 300 Z" class="head h-ink"/>
+          </g>
+          <!-- (b) a new instruction -->
+          <g class="layer l2">
+            <path d="M314 102 V 240" class="draw a-inst" pathLength="1"/>
+            <path d="M308 236 L314 248 L320 236 Z" class="head h-inst"/>
+            <text x="326" y="172" class="note">a new task only</text>
+          </g>
+          <!-- (c) two channels -->
+          <g class="layer l3">
+            <path d="M232 102 V 160 H 132 V 240" class="draw a-inst" pathLength="1"/>
+            <path d="M232 160 H 300 V 240" class="draw a-inst" pathLength="1"/>
+            <path d="M126 236 L132 248 L138 236 Z" class="head h-inst"/>
+            <path d="M294 236 L300 248 L306 236 Z" class="head h-inst"/>
+            <path d="M372 102 V 240" class="draw a-fb" pathLength="1"/>
+            <path d="M366 236 L372 248 L378 236 Z" class="head h-fb"/>
+            <text x="384" y="178" class="note note-fb">learned</text>
+          </g>
+        </svg>
+        <div class="verdict-row" aria-live="polite">
+          <p class="layer-t" data-for="1"><b class="bad">✗ Acts itself, slowly.</b> 2.1 min per success.</p>
+          <p class="layer-t" data-for="2"><b class="bad">✗ From a fresh start only.</b> It cannot say how to move.</p>
+          <p class="layer-t" data-for="3"><b class="ok">✓ The agent thinks, the policy acts.</b> 55 s per success.</p>
+        </div>
+        <div class="seg stepper" role="group" aria-label="Design">
+          <button type="button" data-go="1" aria-pressed="true">(a)</button>
+          <button type="button" data-go="2" aria-pressed="false">(b)</button>
+          <button type="button" data-go="3" aria-pressed="false">(c) RoboThink</button>
+        </div>
       </div>
     </div>
-    <figure>
-      <div class="scroll"><img src="img/teaser.png" alt="Three ways to combine an agent and a policy: the agent takes over, the agent instructs, and RoboThink, where the agent sends [INST] and [FB] to the policy." width="1998" height="821"></div>
-      <figcaption>The agent can take over, which is slow, or instruct, which works only from a fresh start and cannot say
-        how to move. In RoboThink the agent thinks and the policy acts, through both channels.</figcaption>
-    </figure>
   </section>
 
   <section id="training">
@@ -583,6 +737,37 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
   setPlaying(playing);
   build();
   raf = requestAnimationFrame(tick);
+})();
+
+(() => {
+  const dia = document.getElementById("dia");
+  if (!dia) return;
+  const steps = [...document.querySelectorAll(".step")];
+  const buttons = [...document.querySelectorAll("[data-go]")];
+  const verdicts = [...document.querySelectorAll(".layer-t")];
+  let cur = 0;
+  function show(n) {
+    if (n === cur) return;
+    cur = n;
+    dia.setAttribute("class", "dia s" + n);
+    steps.forEach((s) => s.classList.toggle("on", +s.dataset.step === n));
+    buttons.forEach((b) => b.setAttribute("aria-pressed", +b.dataset.go === n));
+    verdicts.forEach((v) => v.classList.toggle("on", +v.dataset.for === n));
+  }
+  show(1);
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) show(+e.target.dataset.step); });
+    }, { rootMargin: window.matchMedia("(max-width: 760px)").matches ? "-62% 0px -30% 0px" : "-45% 0px -45% 0px" });
+    steps.forEach((s) => io.observe(s));
+  }
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  buttons.forEach((b) => b.addEventListener("click", () => {
+    const n = +b.dataset.go;
+    show(n);
+    steps[n - 1].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  }));
+  steps.forEach((s) => s.addEventListener("click", () => show(+s.dataset.step)));
 })();
 </script>
 </body>
