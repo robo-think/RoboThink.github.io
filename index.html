@@ -251,11 +251,90 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
   .layer, .head, .layer-t, .step, .bubble, .pol-box, .mod, .policy { transition: none; }
 }
 
+/* ---------- training diagram ---------- */
+.tscroll { position: relative; height: 330vh; margin-top: .5rem; }
+.tstage { position: sticky; top: 4vh; min-height: 88vh; display: flex; flex-direction: column; justify-content: center; }
+.tview { width: 100%; }
+.tdia { width: 100%; height: auto; max-height: 58vh; display: block; overflow: visible; }
+.tdia text { font-family: inherit; }
+.ttl { font-size: 15px; fill: var(--ink-2); }
+.ttl-b { font-weight: 700; fill: var(--ink); }
+.m { font-family: "Times New Roman", Times, serif; font-style: italic; }
+.sub { font-size: .78em; }
+sub.m { font-style: italic; font-size: .72em; }
+.small { font-size: 14.5px; fill: var(--ink-2); }
+.drift-t { fill: #6d7179; font-style: italic; }
+.fb-say { font-size: 16px; fill: var(--agent); font-variation-settings: "CASL" 1, "slnt" -10; }
+.t-bubble { fill: #fff; stroke: var(--agent); stroke-width: 2; }
+.watch { fill: none; stroke: var(--agent); stroke-width: 1.8; stroke-dasharray: 5 5; }
+.drift-a { fill: none; stroke: #8f949c; stroke-width: 1.8; stroke-dasharray: 5 4; }
+.forearm { transform-box: view-box; transform-origin: 84px 284px; transition: transform .7s cubic-bezier(.3,.7,.2,1); }
+.t1 .forearm { transform: rotate(13deg); }
+.card-box { fill: #fff; stroke: #7091c0; stroke-width: 1.8; }
+.thumb { fill: #eef2f8; stroke: #4d70a8; stroke-width: 1.4; }
+.thumb-bar { fill: #9a9ea6; }
+.thumb-obj { fill: #e6d3a3; }
+.tk-inst { font-variation-settings: "MONO" 1; font-weight: 700; fill: var(--inst); font-size: 15px; }
+.tk-fb { font-variation-settings: "MONO" 1; font-weight: 700; fill: var(--fb); font-size: 15px; }
+.c-t { font-size: 15.5px; fill: var(--ink); }
+.c-fb { font-size: 15.5px; fill: var(--fb); }
+.c-n { font-size: 13.5px; fill: var(--ink-2); }
+.same { font-style: italic; }
+.p-box { fill: #e9eef7; stroke: #7091c0; stroke-width: 2.2; }
+.p-title { font-size: 17px; font-weight: 700; fill: var(--ink); }
+.p-mod { fill: #fff; stroke: #7091c0; stroke-width: 1.6; transition: fill .4s; }
+.p-t { font-size: 15px; fill: var(--ink); }
+.p-trained { font-size: 16px; font-weight: 750; fill: var(--fb); opacity: 0; transition: opacity .4s .5s; }
+.t4 .p-act { fill: #d9e7fa; }
+.t4 .p-trained { opacity: 1; }
+.thin-a { fill: none; stroke: #8f949c; stroke-width: 1.6; }
+.arrow { fill: none; stroke-width: 2.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.a12 { stroke: #8f949c; } .a23 { stroke: #4d70a8; }
+.t2 .a12, .t3 .a12, .t4 .a12, .t4 .a23 { animation: draw .5s ease forwards; }
+.tdia .from2, .tdia .from3, .tdia .from4, .tdia .only1, .tdia .card { transition: opacity .45s, transform .6s cubic-bezier(.3,.7,.2,1); }
+.tdia .from2, .tdia .from3, .tdia .from4 { opacity: .1; }
+.t2 .from2, .t3 .from2, .t4 .from2, .t3 .from3, .t4 .from3, .t4 .from4 { opacity: 1; }
+.tdia .only1 { opacity: 0; }
+.t1 .only1 { opacity: 1; }
+.tdia .card { opacity: 0; transform: translateX(-24px); }
+.t2 .c1, .t3 .c1, .t4 .c1 { opacity: 1; transform: none; }
+.tdia .c2 { transform: translateY(-116px); }
+.tdia .c3 { transform: translateY(-232px); }
+.t3 .c2, .t3 .c3, .t4 .c2, .t4 .c3 { opacity: 1; transform: none; }
+.t3 .col1 { opacity: .5; }
+.t4 .col1, .t4 .col2 { opacity: .5; }
+.col1, .col2 { transition: opacity .45s; }
+.tdia .hide1 { opacity: 0; transition: opacity .45s; }
+.t2 .hide1, .t3 .hide1, .t4 .hide1 { opacity: 1; }
+.tdia .arrow { opacity: 0; }
+.t2 .a12, .t3 .a12, .t4 .a12, .t4 .a23 { opacity: 1; }
+.acc { font-size: 15px; }
+.acc-h { position: relative; display: inline-block; }
+.acc-h::after { content: attr(data-a); position: absolute; left: .08em; top: -.52em; font-size: .9em; }
+.tstage .stepper { align-self: flex-start; margin-top: .6rem; }
+.c-t, .c-fb { font-size: 14.5px; }
+.tcap { position: relative; margin-top: 1rem; min-height: 9.5rem; }
+.tcap-item { position: absolute; inset: 0 0 auto 0; opacity: 0; transition: opacity .35s; pointer-events: none; }
+.tcap-item.on { opacity: 1; pointer-events: auto; }
+.tcap-item h3 { color: var(--agent); }
+.tcap-item p { margin: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .forearm, .tdia .from2, .tdia .from3, .tdia .from4, .tdia .only1, .tdia .card, .col1, .col2, .p-mod, .p-trained, .tcap-item { transition: none; }
+  .t2 .a12, .t3 .a12, .t4 .a12, .t4 .a23 { animation: none; stroke-dashoffset: 0; }
+}
+
 @media (max-width: 760px) {
   header.top { padding-top: 2.75rem; }
   .score { grid-template-columns: 1fr; }
   .frame { max-width: 22rem; }
   .channels, .pair { grid-template-columns: 1fr; }
+  .tscroll { height: 300vh; }
+  .tstage { top: 0; min-height: 100vh; background: var(--paper); }
+  .tview { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tview::-webkit-scrollbar { display: none; }
+  .tdia { min-width: 780px; max-height: none; }
+  .tcap { min-height: 15rem; font-size: .98rem; }
+  .stepper button { padding: .4rem .6rem; font-size: .85rem; }
   .scrolly { grid-template-columns: 1fr; gap: 0; }
   .stage { order: -1; top: 0; z-index: 2; background: var(--paper); padding: .6rem 0 .6rem; border-bottom: 1px solid var(--rule); }
   .stepper { display: none; }
@@ -467,16 +546,146 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
     <h2>Teaching the policy to listen</h2>
     <div class="prose">
       <p>A policy does not follow “push right, slightly” on its own: it reacts to the presence of the text, not to what
-        it says. We teach it from the agent alone. During rollouts on the training tasks, the robot executes its own plan
-        corrected by the agent’s estimate of the drift, and every step is stored with the feedback in force. Role tokens
-        make the feedback a separate segment, counterfactual feedback makes the policy read it, and only the action
-        module is trained.</p>
+        it says. We teach it from the agent alone. Scroll to follow one training state from the rollout to the update.</p>
     </div>
-    <figure>
-      <div class="scroll"><img src="img/train.png" alt="Training: rollouts with the agent, training samples with real, counterfactual and no feedback, and fine-tuning of the action module and role tokens." width="1889" height="478"></div>
-      <figcaption>One state gives three training samples: the agent’s feedback with its corrected target, a
-        counterfactual feedback with its own target (p = 0.5), and no feedback with the plain plan (p = 0.1).</figcaption>
-    </figure>
+    <div class="tscroll" id="tscroll">
+      <div class="tstage">
+        <div class="tview" id="tview">
+          <svg class="tdia t1" id="tdia" viewBox="0 0 1000 410" role="img" aria-labelledby="tdiaTitle">
+            <title id="tdiaTitle">Training the feedback channel: rollouts, training samples and fine-tuning</title>
+            <defs>
+              <marker id="ahGrey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8f949c"/></marker>
+              <marker id="ahBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4d70a8"/></marker>
+              <marker id="ahAgent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6b5aa6"/></marker>
+            </defs>
+            <!-- column titles -->
+            <text x="14" y="22" class="ttl"><tspan class="ttl-b">Rollouts</tspan>: training tasks and drifts</text>
+            <text x="304" y="22" class="ttl from2"><tspan class="ttl-b">Training samples</tspan>: one state, three feedbacks</text>
+            <text x="800" y="22" class="ttl from4"><tspan class="ttl-b">Fine-tuning</tspan>, own loss</text>
+
+            <!-- ===== column 1: rollouts ===== -->
+            <g class="col1">
+              <g class="from2">
+                <g transform="translate(36,48) scale(.86)">
+                  <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/>
+                  <circle cx="36" cy="2" r="4.5" class="ag-fill"/>
+                  <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/>
+                  <rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
+                  <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
+                  <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
+                  <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
+                  <path d="M27 52 q9 7 18 0" class="mouth"/>
+                </g>
+                <text x="67" y="128" text-anchor="middle" class="ag-label">reasoning agent</text>
+                <rect x="118" y="62" width="172" height="40" rx="10" class="t-bubble"/>
+                <text x="204" y="88" text-anchor="middle" class="fb-say">“push right, slightly”</text>
+                <path d="M 24 352 V 92 H 32" class="watch" marker-end="url(#ahAgent)"/>
+                <g class="hide1"><text x="122" y="176" class="small">executes the plan</text>
+                <text x="122" y="196" class="small">corrected by the agent:</text>
+                <text x="122" y="220" class="small"><tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text></g>
+              </g>
+              <g class="only1">
+                <text x="150" y="196" class="small">the policy plans <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text>
+                <text x="150" y="216" class="small"><tspan dy="0">for the plain instruction </tspan><tspan class="m">ℓ</tspan></text>
+              </g>
+              <line x1="10" y1="396" x2="282" y2="396" class="ground"/>
+              <rect x="42" y="372" width="56" height="24" rx="3" class="base"/>
+              <line x1="70" y1="372" x2="84" y2="284" class="link"/>
+              <g class="forearm">
+                <line x1="84" y1="284" x2="174" y2="258" class="link"/>
+                <circle cx="174" cy="258" r="6" class="joint"/>
+                <path d="M174 264 V278 M161 278 H187 M161 278 V295 M187 278 V295" class="grip"/>
+              </g>
+              <circle cx="70" cy="372" r="6" class="joint"/><circle cx="84" cy="284" r="6" class="joint"/>
+              <rect x="214" y="376" width="30" height="20" rx="2" class="obj"/>
+              <g class="only1">
+                <path d="M 196 300 C 222 314, 236 330, 238 350" class="drift-a" marker-end="url(#ahGrey)"/>
+                <text x="242" y="344" class="small drift-t">drift</text>
+              </g>
+            </g>
+            <path d="M 292 226 H 300" class="arrow a12" marker-end="url(#ahGrey)" pathLength="1"/>
+
+            <!-- ===== column 2: three training samples of one state ===== -->
+            <g class="col2">
+              <g class="card c1">
+                <rect x="304" y="44" width="472" height="88" rx="10" class="card-box"/>
+                <rect x="318" y="58" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="72" width="7" height="34" class="thumb-bar"/><rect x="356" y="100" width="14" height="9" class="thumb-obj"/>
+                <text x="394" y="80"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text>
+                <text x="394" y="110"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push right, slightly”</tspan></text>
+                <text x="606" y="80" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text>
+                <text x="606" y="110" class="c-n">the agent’s feedback</text>
+              </g>
+              <g class="card c2">
+                <rect x="304" y="160" width="472" height="88" rx="10" class="card-box"/>
+                <rect x="318" y="174" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="188" width="7" height="34" class="thumb-bar"/><rect x="356" y="216" width="14" height="9" class="thumb-obj"/>
+                <text x="394" y="196"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text>
+                <text x="394" y="226"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push up, strongly”</tspan></text>
+                <text x="606" y="196" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.6" dy="-8">˜</tspan></text>
+                <text x="606" y="226" class="c-n">counterfactual (<tspan class="m">p</tspan> = 0.5)</text>
+              </g>
+              <g class="card c3">
+                <rect x="304" y="276" width="472" height="88" rx="10" class="card-box"/>
+                <rect x="318" y="290" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="304" width="7" height="34" class="thumb-bar"/><rect x="356" y="332" width="14" height="9" class="thumb-obj"/>
+                <text x="394" y="312"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text>
+                <text x="394" y="342"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “none”</tspan></text>
+                <text x="606" y="312" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text>
+                <text x="606" y="342" class="c-n">no feedback (<tspan class="m">p</tspan> = 0.1)</text>
+              </g>
+              <text x="540" y="394" text-anchor="middle" class="small same from3">the same state each time</text>
+            </g>
+            <path d="M 780 226 H 796" class="arrow a23" marker-end="url(#ahBlue)" pathLength="1"/>
+
+            <!-- ===== column 3: the policy ===== -->
+            <g class="col3 from4">
+              <rect x="800" y="40" width="194" height="330" rx="12" class="p-box"/>
+              <text x="897" y="70" text-anchor="middle" class="p-title">robot policy</text>
+              <rect x="814" y="88" width="166" height="86" rx="9" class="p-mod"/>
+              <text x="885" y="122" text-anchor="middle" class="p-t">world module</text>
+              <text x="885" y="148" text-anchor="middle" class="p-t">frozen, plain <tspan class="m">ℓ</tspan></text>
+              <g transform="translate(950,112)" class="lock"><path d="M3 12 V7 a6 6 0 0 1 12 0 V12" fill="none" stroke="#6d7179" stroke-width="2.4"/><rect x="0" y="11" width="18" height="15" rx="3" fill="#6d7179"/></g>
+              <path d="M 897 176 V 210" class="thin-a" marker-end="url(#ahGrey)"/>
+              <rect x="814" y="216" width="166" height="120" rx="9" class="p-mod p-act"/>
+              <text x="897" y="250" text-anchor="middle" class="p-t">action module</text>
+              <text x="897" y="276" text-anchor="middle" class="p-t">+ role tokens</text>
+              <text x="897" y="310" text-anchor="middle" class="p-trained">trained</text>
+            </g>
+          </svg>
+        </div>
+        <div class="tcap" aria-live="polite">
+          <div class="tcap-item on" data-for="1">
+            <h3>Rollouts on the training tasks</h3>
+            <p>On the training tasks, a drift from a training distribution is added to every motion command. The policy
+              plans its chunk <i class="m">a</i><sub class="m">k</sub> for the plain instruction <i class="m">ℓ</i>, and the drift pulls the hand away.</p>
+          </div>
+          <div class="tcap-item" data-for="2">
+            <h3>The agent is the teacher</h3>
+            <p>After chunks 1, 2 and 3 and then every four chunks, the agent estimates the drift <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub> from the frames
+              and the commanded versus actual motion, and renders it as feedback: “push right, slightly”. The robot
+              executes its own plan corrected by the estimate, <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>, and every step is stored with the
+              feedback in force.</p>
+          </div>
+          <div class="tcap-item" data-for="3">
+            <h3>Counterfactual feedback</h3>
+            <p>Each state carries the one estimate the agent happened to make, so the policy could fit the target from the
+              state alone. With <i class="m">p</i> = 0.5 a clip instead gets the feedback of another drift <i class="m acc-h" data-a="˜">δ</i> and the target
+              <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="˜">δ</i>, and with <i class="m">p</i> = 0.1 “none” and the plain plan. The same state now needs different moves
+              for different feedback, which only reading the feedback can fit. The true drift is never used.</p>
+          </div>
+          <div class="tcap-item" data-for="4">
+            <h3>Fine-tuning the action module</h3>
+            <p>Only the action module and the role tokens are trained, with the policy’s own loss. The world module stays
+              frozen and keeps the plain instruction, so the feedback never distorts what it imagines. The policy then
+              moves as the feedback says, and the other way for the opposite feedback.</p>
+          </div>
+        </div>
+        <div class="seg stepper" role="group" aria-label="Training step">
+          <button type="button" data-tgo="1" aria-pressed="true">Rollouts</button>
+          <button type="button" data-tgo="2" aria-pressed="false">Agent</button>
+          <button type="button" data-tgo="3" aria-pressed="false">Counterfactual</button>
+          <button type="button" data-tgo="4" aria-pressed="false">Fine-tuning</button>
+        </div>
+      </div>
+    </div>
     <figure>
       <div class="scroll"><img src="img/follow_probe.png" alt="Probe of the first planned chunk with and without feedback, for Fast-WAM, DAgger alone and RoboThink." width="1732" height="607"></div>
       <figcaption>Does the policy do what the feedback says? Fast-WAM moves the same way for opposite feedback. RoboThink
@@ -768,6 +977,41 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
     steps[n - 1].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
   }));
   steps.forEach((s) => s.addEventListener("click", () => show(+s.dataset.step)));
+})();
+
+(() => {
+  const box = document.getElementById("tscroll"), dia = document.getElementById("tdia"), view = document.getElementById("tview");
+  if (!box || !dia) return;
+  const N = 4, caps = [...document.querySelectorAll(".tcap-item")], btns = [...document.querySelectorAll("[data-tgo]")];
+  const focusX = [150, 300, 540, 890];
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cur = 0;
+  function show(n) {
+    if (n === cur) return;
+    cur = n;
+    dia.setAttribute("class", "tdia t" + n);
+    caps.forEach((c) => c.classList.toggle("on", +c.dataset.for === n));
+    btns.forEach((b) => b.setAttribute("aria-pressed", +b.dataset.tgo === n));
+    if (view.scrollWidth > view.clientWidth + 4) {
+      const x = focusX[n - 1] / 1000 * view.scrollWidth - view.clientWidth / 2;
+      view.scrollTo({ left: Math.max(0, x), behavior: reduce ? "auto" : "smooth" });
+    }
+  }
+  function onScroll() {
+    const r = box.getBoundingClientRect(), span = r.height - window.innerHeight;
+    const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+    show(Math.min(N, Math.floor(p * N) + 1));
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  btns.forEach((b) => b.addEventListener("click", () => {
+    const n = +b.dataset.tgo, r = box.getBoundingClientRect(), span = r.height - window.innerHeight;
+    const top = window.scrollY + r.top + span * (n - 0.5) / N;
+    window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
+    show(n);
+  }));
+  onScroll();
+  if (!cur) show(1);
 })();
 </script>
 </body>
