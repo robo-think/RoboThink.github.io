@@ -179,20 +179,16 @@ pre.bib {
 .copy:hover { background: var(--ink); color: var(--paper); }
 footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: .9rem; }
 
-/* ---------- method diagram ---------- */
-.scrolly { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 2.5rem; margin-top: 1rem; }
-.steps { padding-bottom: 0; }
-.step:last-child { min-height: 48vh; }
-.step { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; color: var(--ink-3); transition: color .3s; }
-.step:first-child { min-height: 46vh; justify-content: flex-start; padding-top: 2rem; }
-.step.on { color: var(--ink); }
-.step h3 { font-size: 1.3rem; }
-.step.on h3 { color: var(--agent); }
-.step .tok { opacity: .6; transition: opacity .3s; }
-.step.on .tok { opacity: 1; }
-.stage { position: sticky; top: 9vh; align-self: start; padding-top: 1rem; }
-.dia { width: 100%; height: auto; display: block; overflow: visible; }
-.dia text { font-family: inherit; }
+/* ---------- looping diagrams ---------- */
+.rows { margin-top: 1.25rem; }
+.row { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 2.5rem; align-items: center; padding: 1.4rem 0; border-top: 1px solid var(--rule); }
+.row:last-child { border-bottom: 1px solid var(--rule); }
+.row h3 { font-size: 1.3rem; color: var(--agent); }
+.row-text p { margin: 0 0 .6rem; }
+.row-v { font-size: .98rem; }
+.row-v .ok { color: var(--ok); } .row-v .bad { color: var(--bad); }
+.dia2, .tdia2 { width: 100%; height: auto; display: block; overflow: visible; }
+.dia2 text, .tdia2 text { font-family: inherit; }
 .ag-line { stroke: var(--agent); stroke-width: 2.5; }
 .ag-fill { fill: var(--agent); }
 .ag-body { fill: #e4def5; stroke: var(--agent); stroke-width: 2.5; }
@@ -200,24 +196,23 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
 .pupil { fill: #2b2b2b; }
 .mouth { fill: none; stroke: #2b2b2b; stroke-width: 2; stroke-linecap: round; }
 .ag-label { fill: var(--agent); font-size: 15px; font-weight: 600; font-variation-settings: "CASL" 1, "CRSV" 1; }
-.bubble { stroke-width: 2; transition: fill .35s, stroke .35s; }
-.s1 .bubble { fill: #ece8f7; stroke: var(--agent); }
-.s2 .bubble { fill: #fdf1cf; stroke: #d6b95c; }
-.s3 .bubble { fill: #fff; stroke: var(--agent); }
+.bubble2 { stroke-width: 2; }
+.b-agent { fill: #ece8f7; stroke: var(--agent); }
+.b-inst { fill: #fdf1cf; stroke: #d6b95c; }
+.b-rt { fill: #fff; stroke: var(--agent); }
 .code { font-size: 20px; fill: #3b2f63; font-variation-settings: "MONO" 1, "CASL" 0; }
 .say-inst { font-size: 21px; fill: #6f4c12; }
 .t-tok { font-variation-settings: "MONO" 1, "CASL" 0; font-weight: 700; }
 .t-inst { fill: var(--inst); font-size: 21px; }
 .t-fb { fill: var(--fb); font-size: 21px; }
-.pol-box { stroke-width: 2; transition: fill .35s, stroke .35s; fill: #f2f2f2; stroke: #8f949c; }
-.s3 .pol-box { fill: #eaf0f8; stroke: #7091c0; }
-.mod { fill: #fff; stroke: #6d7179; stroke-width: 1.8; transition: fill .35s, stroke .35s; }
-.s3 .world { fill: #ececec; }
-.s3 .action { fill: #d9e7fa; stroke: var(--fb); }
+.pol-box { stroke-width: 2; fill: #f2f2f2; stroke: #8f949c; }
+.pol-box.rt { fill: #eaf0f8; stroke: #7091c0; }
+.policy.off { opacity: .32; }
+.mod { fill: #fff; stroke: #6d7179; stroke-width: 1.8; }
+.mod.rtw { fill: #ececec; }
+.mod.rta { fill: #d9e7fa; stroke: var(--fb); }
 .mod-t { font-size: 20px; fill: var(--ink); }
 .pol-t { font-size: 19px; font-weight: 700; fill: var(--ink); }
-.policy { transition: opacity .35s; }
-.s1 .policy { opacity: .32; }
 .sub { font-size: 13px; fill: var(--ink-2); }
 .sub-fb { fill: var(--fb); font-weight: 650; }
 .thin { stroke: #8f949c; stroke-width: 1.6; }
@@ -230,97 +225,53 @@ footer { margin-top: 4.5rem; padding: 1.5rem 0 3rem; border-top: 1px solid var(-
 .obj { fill: #fef1cc; stroke: #d6b95c; stroke-width: 1.8; }
 .note { font-size: 16px; font-style: italic; fill: var(--ink-3); font-variation-settings: "CASL" 1, "slnt" -10; }
 .note-fb { fill: var(--fb); }
-.draw { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.a-agent { stroke: var(--agent); } .h-agent { fill: var(--agent); }
-.a-inst { stroke: var(--inst); } .h-inst { fill: var(--inst); }
-.a-fb { stroke: var(--fb); } .h-fb { fill: var(--fb); }
-.a-ink { stroke: #6d7179; } .h-ink { fill: #6d7179; }
-.layer { opacity: 0; transition: opacity .3s; }
-.s1 .l1, .s2 .l2, .s3 .l3, .s2 .l23, .s3 .l23 { opacity: 1; }
-.s1 .l1 .draw, .s2 .l2 .draw, .s3 .l3 .draw, .s2 .l23 .draw, .s3 .l23 .draw { animation: draw .75s cubic-bezier(.4,.1,.2,1) .1s forwards; }
-.head { opacity: 0; transition: opacity .2s; }
-.s1 .l1 .head, .s2 .l2 .head, .s3 .l3 .head, .s2 .l23 .head, .s3 .l23 .head { opacity: 1; transition-delay: .75s; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-.verdict-row { position: relative; min-height: 2rem; margin-top: .4rem; }
-.layer-t { position: absolute; left: 0; top: 0; margin: 0; opacity: 0; transition: opacity .3s; }
-.layer-t.on { opacity: 1; position: relative; }
-.layer-t .ok { color: var(--ok); } .layer-t .bad { color: var(--bad); }
-.stepper { margin-top: .9rem; }
-@media (prefers-reduced-motion: reduce) {
-  .draw, .s1 .l1 .draw, .s2 .l2 .draw, .s3 .l3 .draw, .s2 .l23 .draw, .s3 .l23 .draw { animation: none; stroke-dashoffset: 0; }
-  .layer, .head, .layer-t, .step, .bubble, .pol-box, .mod, .policy { transition: none; }
-}
-
-/* ---------- training diagram ---------- */
-.tscroll { position: relative; height: 330vh; margin-top: .5rem; }
-.tstage { position: sticky; top: 4vh; min-height: 88vh; display: flex; flex-direction: column; justify-content: center; }
-.tview { width: 100%; }
-.tdia { width: 100%; height: auto; max-height: 58vh; display: block; overflow: visible; }
-.tdia text { font-family: inherit; }
+.ln { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 7 6; animation: march 1.1s linear infinite; }
+@keyframes march { to { stroke-dashoffset: -13; } }
+.ln-agent { stroke: var(--agent); } .hd-agent { fill: var(--agent); }
+.ln-inst { stroke: var(--inst); } .hd-inst { fill: var(--inst); }
+.ln-fb { stroke: var(--fb); } .hd-fb { fill: var(--fb); }
+.ln-ink { stroke: #6d7179; } .hd-ink { fill: #6d7179; }
+.glow { fill: none; stroke: var(--fb); stroke-width: 4; }
+.glow-agent { fill: none; stroke: var(--agent); stroke-width: 4; }
+/* Fig. 2 */
+.tfig { margin-top: 1.5rem; }
 .ttl { font-size: 15px; fill: var(--ink-2); }
 .ttl-b { font-weight: 700; fill: var(--ink); }
 .m { font-family: "Times New Roman", Times, serif; font-style: italic; }
 .sub { font-size: .78em; }
 sub.m { font-style: italic; font-size: .72em; }
+.acc { font-size: 15px; }
+.acc-h { position: relative; display: inline-block; }
+.acc-h::after { content: attr(data-a); position: absolute; left: .08em; top: -.52em; font-size: .9em; }
 .small { font-size: 14.5px; fill: var(--ink-2); }
 .drift-t { fill: #6d7179; font-style: italic; }
 .fb-say { font-size: 16px; fill: var(--agent); font-variation-settings: "CASL" 1, "slnt" -10; }
 .t-bubble { fill: #fff; stroke: var(--agent); stroke-width: 2; }
-.watch { fill: none; stroke: var(--agent); stroke-width: 1.8; stroke-dasharray: 5 5; }
+.watch { fill: none; stroke: var(--agent); stroke-width: 1.8; stroke-dasharray: 5 5; animation: march 1.1s linear infinite reverse; }
 .drift-a { fill: none; stroke: #8f949c; stroke-width: 1.8; stroke-dasharray: 5 4; }
-.forearm { transform-box: view-box; transform-origin: 84px 284px; transition: transform .7s cubic-bezier(.3,.7,.2,1); }
-.t1 .forearm { transform: rotate(13deg); }
 .card-box { fill: #fff; stroke: #7091c0; stroke-width: 1.8; }
 .thumb { fill: #eef2f8; stroke: #4d70a8; stroke-width: 1.4; }
 .thumb-bar { fill: #9a9ea6; }
 .thumb-obj { fill: #e6d3a3; }
 .tk-inst { font-variation-settings: "MONO" 1; font-weight: 700; fill: var(--inst); font-size: 15px; }
 .tk-fb { font-variation-settings: "MONO" 1; font-weight: 700; fill: var(--fb); font-size: 15px; }
-.c-t { font-size: 15.5px; fill: var(--ink); }
-.c-fb { font-size: 15.5px; fill: var(--fb); }
+.c-t, .c-fb { font-size: 14.5px; }
+.c-t { fill: var(--ink); }
+.c-fb { fill: var(--fb); }
 .c-n { font-size: 13.5px; fill: var(--ink-2); }
 .same { font-style: italic; }
 .p-box { fill: #e9eef7; stroke: #7091c0; stroke-width: 2.2; }
 .p-title { font-size: 17px; font-weight: 700; fill: var(--ink); }
-.p-mod { fill: #fff; stroke: #7091c0; stroke-width: 1.6; transition: fill .4s; }
+.p-mod { fill: #fff; stroke: #7091c0; stroke-width: 1.6; }
+.p-act { fill: #d9e7fa; }
 .p-t { font-size: 15px; fill: var(--ink); }
-.p-trained { font-size: 16px; font-weight: 750; fill: var(--fb); opacity: 0; transition: opacity .4s .5s; }
-.t4 .p-act { fill: #d9e7fa; }
-.t4 .p-trained { opacity: 1; }
+.p-trained { font-size: 16px; font-weight: 750; fill: var(--fb); }
 .thin-a { fill: none; stroke: #8f949c; stroke-width: 1.6; }
-.arrow { fill: none; stroke-width: 2.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.a12 { stroke: #8f949c; } .a23 { stroke: #4d70a8; }
-.t2 .a12, .t3 .a12, .t4 .a12, .t4 .a23 { animation: draw .5s ease forwards; }
-.tdia .from2, .tdia .from3, .tdia .from4, .tdia .only1, .tdia .card { transition: opacity .45s, transform .6s cubic-bezier(.3,.7,.2,1); }
-.tdia .from2, .tdia .from3, .tdia .from4 { opacity: .1; }
-.t2 .from2, .t3 .from2, .t4 .from2, .t3 .from3, .t4 .from3, .t4 .from4 { opacity: 1; }
-.tdia .only1 { opacity: 0; }
-.t1 .only1 { opacity: 1; }
-.tdia .card { opacity: 0; transform: translateX(-24px); }
-.t2 .c1, .t3 .c1, .t4 .c1 { opacity: 1; transform: none; }
-.tdia .c2 { transform: translateY(-116px); }
-.tdia .c3 { transform: translateY(-232px); }
-.t3 .c2, .t3 .c3, .t4 .c2, .t4 .c3 { opacity: 1; transform: none; }
-.t3 .col1 { opacity: .5; }
-.t4 .col1, .t4 .col2 { opacity: .5; }
-.col1, .col2 { transition: opacity .45s; }
-.tdia .hide1 { opacity: 0; transition: opacity .45s; }
-.t2 .hide1, .t3 .hide1, .t4 .hide1 { opacity: 1; }
-.tdia .arrow { opacity: 0; }
-.t2 .a12, .t3 .a12, .t4 .a12, .t4 .a23 { opacity: 1; }
-.acc { font-size: 15px; }
-.acc-h { position: relative; display: inline-block; }
-.acc-h::after { content: attr(data-a); position: absolute; left: .08em; top: -.52em; font-size: .9em; }
-.tstage .stepper { align-self: flex-start; margin-top: .6rem; }
-.c-t, .c-fb { font-size: 14.5px; }
-.tcap { position: relative; margin-top: 1rem; min-height: 9.5rem; }
-.tcap-item { position: absolute; inset: 0 0 auto 0; opacity: 0; transition: opacity .35s; pointer-events: none; }
-.tcap-item.on { opacity: 1; pointer-events: auto; }
-.tcap-item h3 { color: var(--agent); }
-.tcap-item p { margin: 0; }
+.tcols { display: grid; grid-template-columns: 3fr 4.7fr 2.3fr; gap: 1.5rem; margin-top: 1.25rem; }
+.tcols h3 { font-size: 1.05rem; color: var(--agent); }
+.tcols p { margin: 0; font-size: .97rem; }
 @media (prefers-reduced-motion: reduce) {
-  .forearm, .tdia .from2, .tdia .from3, .tdia .from4, .tdia .only1, .tdia .card, .col1, .col2, .p-mod, .p-trained, .tcap-item { transition: none; }
-  .t2 .a12, .t3 .a12, .t4 .a12, .t4 .a23 { animation: none; stroke-dashoffset: 0; }
+  .ln, .watch { animation: none; }
 }
 
 @media (max-width: 760px) {
@@ -328,17 +279,10 @@ sub.m { font-style: italic; font-size: .72em; }
   .score { grid-template-columns: 1fr; }
   .frame { max-width: 22rem; }
   .channels, .pair { grid-template-columns: 1fr; }
-  .tscroll { height: 300vh; }
-  .tstage { top: 0; min-height: 100vh; background: var(--paper); }
-  .tview { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-  .tview::-webkit-scrollbar { display: none; }
-  .tdia { min-width: 780px; max-height: none; }
-  .tcap { min-height: 15rem; font-size: .98rem; }
-  .stepper button { padding: .4rem .6rem; font-size: .85rem; }
-  .scrolly { grid-template-columns: 1fr; gap: 0; }
-  .stage { order: -1; top: 0; z-index: 2; background: var(--paper); padding: .6rem 0 .6rem; border-bottom: 1px solid var(--rule); }
-  .stepper { display: none; }
-  .step, .step:first-child { min-height: 55vh; padding-top: 1rem; justify-content: flex-start; }
+  .row { grid-template-columns: 1fr; gap: .75rem; }
+  .tcols { grid-template-columns: 1fr; gap: .4rem; }
+  .tview { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tdia2 { min-width: 760px; }
   .pair img { max-height: none; width: 100%; }
   .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .scroll img { min-width: 620px; }
@@ -435,108 +379,123 @@ sub.m { font-style: italic; font-size: .72em; }
 
   <section id="method">
     <h2>From taking over to thinking along</h2>
-    <div class="scrolly">
-      <div class="steps">
-        <article class="step on" data-step="1">
+    <div class="rows">
+      <div class="row row-a">
+        <div class="row-text">
           <h3>(a) The agent takes over</h3>
-          <p>Agents that act as the policy control the robot through code, so every motion waits for the agent to
-            think. It works, but slowly: acting alone, GPT-6 Astra needs 2.1 min and over a million tokens per
-            successful episode.</p>
-        </article>
-        <article class="step" data-step="2">
-          <h3>(b) The agent instructs</h3>
-          <p>The agent sends a new instruction and the policy acts on it. Yet a policy follows a new instruction only
-            from a fresh start, since a half-finished task leaves it in states outside its training data. Nor can an
-            instruction fix how the robot moves: “push right, slightly” is not a task the policy has learned.</p>
-        </article>
-        <article class="step" data-step="3">
-          <h3>(c) RoboThink</h3>
-          <p>The agent thinks and the policy acts. <span class="tok inst">[INST]</span> tells the policy what to do:
-            the agent rewrites the instruction, and the robot first undoes its own motion, with no training.
-            <span class="tok fb">[FB]</span> tells it how to move: it is taught from the agent alone and read only by
-            the action module, while the world module keeps the plain instruction.</p>
-          <p>55 s and 8k tokens per success.</p>
-        </article>
-      </div>
-      <div class="stage">
-        <svg class="dia s1" id="dia" viewBox="0 0 660 384" role="img" aria-labelledby="diaTitle">
-          <title id="diaTitle">How the agent reaches the robot in three designs</title>
-          <!-- agent -->
-          <g transform="translate(26,30)">
-            <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/>
-            <circle cx="36" cy="2" r="4.5" class="ag-fill"/>
-            <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/>
-            <rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
-            <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
-            <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
-            <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
-            <path d="M27 52 q9 7 18 0" class="mouth"/>
-          </g>
-          <text x="62" y="122" text-anchor="middle" class="ag-label">reasoning agent</text>
-          <!-- speech bubble -->
-          <rect x="128" y="22" width="372" height="80" rx="12" class="bubble"/>
-          <g class="layer l1"><text x="150" y="55" class="code">move_to(0.4, 0.1)</text><text x="150" y="83" class="code">grip()</text></g>
-          <g class="layer l2"><text x="314" y="70" text-anchor="middle" class="say-inst">“put the milk in the basket”</text></g>
-          <g class="layer l3">
-            <text x="150" y="55"><tspan class="t-inst t-tok">[INST]</tspan><tspan class="t-inst"> fetch the milk</tspan></text>
-            <text x="150" y="85"><tspan class="t-fb t-tok">[FB]</tspan><tspan class="t-fb"> push right, slightly</tspan></text>
-          </g>
-          <!-- policy -->
-          <g class="policy">
-            <rect x="34" y="226" width="392" height="146" rx="12" class="pol-box"/>
-            <rect x="60" y="250" width="144" height="52" rx="10" class="mod world"/>
-            <text x="132" y="282" text-anchor="middle" class="mod-t">world</text>
-            <rect x="256" y="250" width="144" height="52" rx="10" class="mod action"/>
-            <text x="328" y="282" text-anchor="middle" class="mod-t">action</text>
-            <line x1="206" y1="276" x2="246" y2="276" class="thin"/><path d="M246 271 l8 5 l-8 5z" class="thin-head"/>
-            <text x="230" y="358" text-anchor="middle" class="pol-t">robot policy</text>
-            <g class="layer l3"><text x="132" y="322" text-anchor="middle" class="sub">frozen</text><text x="328" y="322" text-anchor="middle" class="sub sub-fb">trained</text></g>
-          </g>
-          <!-- robot -->
-          <line x1="468" y1="372" x2="648" y2="372" class="ground"/>
-          <rect x="498" y="350" width="48" height="22" rx="3" class="base"/>
-          <line x1="522" y1="350" x2="510" y2="262" class="link"/>
-          <line x1="510" y1="262" x2="594" y2="232" class="link"/>
-          <circle cx="522" cy="350" r="6" class="joint"/><circle cx="510" cy="262" r="6" class="joint"/><circle cx="594" cy="232" r="6" class="joint"/>
-          <path d="M594 238 V252 M582 252 H606 M582 252 V268 M606 252 V268" class="grip"/>
-          <rect x="604" y="352" width="24" height="20" rx="2" class="obj"/>
-          <!-- (a) the agent acts itself -->
-          <g class="layer l1">
-            <text x="230" y="214" text-anchor="middle" class="note">policy not used</text>
-            <path d="M470 102 C 470 170, 594 160, 594 214" class="draw a-agent" pathLength="1"/>
-            <path d="M588 206 L594 218 L600 206 Z" class="head h-agent"/>
-          </g>
-          <!-- policy acts on the robot -->
-          <g class="layer l23">
-            <line x1="428" y1="294" x2="470" y2="294" class="draw a-ink" pathLength="1"/>
-            <path d="M466 288 L478 294 L466 300 Z" class="head h-ink"/>
-          </g>
-          <!-- (b) a new instruction -->
-          <g class="layer l2">
-            <path d="M314 102 V 240" class="draw a-inst" pathLength="1"/>
-            <path d="M308 236 L314 248 L320 236 Z" class="head h-inst"/>
-            <text x="326" y="172" class="note">a new task only</text>
-          </g>
-          <!-- (c) two channels -->
-          <g class="layer l3">
-            <path d="M232 102 V 160 H 132 V 240" class="draw a-inst" pathLength="1"/>
-            <path d="M232 160 H 300 V 240" class="draw a-inst" pathLength="1"/>
-            <path d="M126 236 L132 248 L138 236 Z" class="head h-inst"/>
-            <path d="M294 236 L300 248 L306 236 Z" class="head h-inst"/>
-            <path d="M372 102 V 240" class="draw a-fb" pathLength="1"/>
-            <path d="M366 236 L372 248 L378 236 Z" class="head h-fb"/>
-            <text x="384" y="178" class="note note-fb">learned</text>
-          </g>
-        </svg>
-        <div class="verdict-row" aria-live="polite">
-          <p class="layer-t" data-for="1"><b class="bad">✗ Acts itself, slowly.</b> 2.1 min per success.</p>
-          <p class="layer-t" data-for="2"><b class="bad">✗ From a fresh start only.</b> It cannot say how to move.</p>
-          <p class="layer-t" data-for="3"><b class="ok">✓ The agent thinks, the policy acts.</b> 55 s per success.</p>
+          <p>Agents that act as the policy control the robot through code, so every motion waits for the agent to think. It works, but slowly: acting alone, GPT-6 Astra needs 2.1 min and over a million tokens per successful episode.</p>
+          <p class="row-v"><b class="bad">✗ Acts itself, slowly.</b> 2.1 min per success.</p>
         </div>
-        <div class="seg stepper" role="group" aria-label="Design">
-          <button type="button" data-go="1" aria-pressed="true">(a)</button>
-          <button type="button" data-go="2" aria-pressed="false">(b)</button>
-          <button type="button" data-go="3" aria-pressed="false">(c) RoboThink</button>
+        <div class="row-fig">
+<svg class="dia2" viewBox="0 0 660 384" role="img" aria-label="Diagram (a)">
+<g transform="translate(26,30)">
+  <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/><circle cx="36" cy="2" r="4.5" class="ag-fill"/>
+  <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
+  <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
+  <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
+  <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
+  <path d="M27 52 q9 7 18 0" class="mouth"/></g>
+<text x="62" y="122" text-anchor="middle" class="ag-label">reasoning agent</text>
+<rect x="128" y="22" width="372" height="80" rx="12" class="bubble2 b-agent"/><text x="150" y="55" class="code">move_to(0.4, 0.1)</text><text x="150" y="83" class="code">grip()</text>
+<circle cx="106" cy="18" r="3" class="ag-fill" opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;1;0;0" keyTimes="0;0.05;0.38;1"/></circle>
+<circle cx="116" cy="18" r="3" class="ag-fill" opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;1;0;0" keyTimes="0;0.09;0.38;1"/></circle>
+<circle cx="126" cy="18" r="3" class="ag-fill" opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;1;0;0" keyTimes="0;0.13;0.38;1"/></circle>
+<g class="policy off"><rect x="34" y="226" width="392" height="146" rx="12" class="pol-box off"/>
+<rect x="60" y="250" width="144" height="52" rx="10" class="mod world"/><text x="132" y="282" text-anchor="middle" class="mod-t">world</text>
+<rect x="256" y="250" width="144" height="52" rx="10" class="mod action"/><text x="328" y="282" text-anchor="middle" class="mod-t">action</text>
+<line x1="206" y1="276" x2="246" y2="276" class="thin"/><path d="M246 271 l8 5 l-8 5z" class="thin-head"/>
+<text x="230" y="358" text-anchor="middle" class="pol-t">robot policy</text></g>
+<text x="230" y="214" text-anchor="middle" class="note">policy not used</text>
+<path id="a1" d="M470 102 C 470 170, 594 160, 594 216" class="ln ln-agent"/><path d="M588 208 L594 220 L600 208 Z" class="hd-agent"/>
+<line x1="468" y1="372" x2="648" y2="372" class="ground"/>
+<rect x="498" y="350" width="48" height="22" rx="3" class="base"/>
+<line x1="522" y1="350" x2="510" y2="262" class="link"/>
+<g><animateTransform attributeName="transform" type="rotate" dur="6s" repeatCount="indefinite" values="0 510 262;0 510 262;-11 510 262;-11 510 262;0 510 262" keyTimes="0;0.6;0.75;0.9;1"/><line x1="510" y1="262" x2="594" y2="232" class="link"/><circle cx="594" cy="232" r="6" class="joint"/>
+<path d="M594 238 V252 M582 252 H606 M582 252 V268 M606 252 V268" class="grip"/></g>
+<circle cx="522" cy="350" r="6" class="joint"/><circle cx="510" cy="262" r="6" class="joint"/>
+<rect x="604" y="352" width="24" height="20" rx="2" class="obj"/>
+<circle r="7" fill="#6b5aa6" opacity="0"><animateMotion dur="6s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.38;0.58;1"><mpath href="#a1"/></animateMotion><animate attributeName="opacity" dur="6s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.37;0.38;0.58;0.6;1"/></circle>
+</svg>
+        </div>
+      </div>
+      <div class="row row-b">
+        <div class="row-text">
+          <h3>(b) The agent instructs</h3>
+          <p>The agent sends a new instruction and the policy acts on it. Yet a policy follows a new instruction only from a fresh start, since a half-finished task leaves it in states outside its training data. Nor can an instruction fix how the robot moves: “push right, slightly” is not a task the policy has learned.</p>
+          <p class="row-v"><b class="bad">✗ From a fresh start only.</b> It cannot say how to move.</p>
+        </div>
+        <div class="row-fig">
+<svg class="dia2" viewBox="0 0 660 384" role="img" aria-label="Diagram (b)">
+<g transform="translate(26,30)">
+  <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/><circle cx="36" cy="2" r="4.5" class="ag-fill"/>
+  <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
+  <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
+  <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
+  <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
+  <path d="M27 52 q9 7 18 0" class="mouth"/></g>
+<text x="62" y="122" text-anchor="middle" class="ag-label">reasoning agent</text>
+<rect x="128" y="22" width="372" height="80" rx="12" class="bubble2 b-inst"/><text x="314" y="70" text-anchor="middle" class="say-inst">“put the milk in the basket”</text>
+<g class="policy"><rect x="34" y="226" width="392" height="146" rx="12" class="pol-box"/>
+<rect x="60" y="250" width="144" height="52" rx="10" class="mod world"/><text x="132" y="282" text-anchor="middle" class="mod-t">world</text>
+<rect x="256" y="250" width="144" height="52" rx="10" class="mod action"/><text x="328" y="282" text-anchor="middle" class="mod-t">action</text>
+<line x1="206" y1="276" x2="246" y2="276" class="thin"/><path d="M246 271 l8 5 l-8 5z" class="thin-head"/>
+<text x="230" y="358" text-anchor="middle" class="pol-t">robot policy</text></g>
+<path id="b1" d="M314 102 V 246" class="ln ln-inst"/><path d="M308 238 L314 250 L320 238 Z" class="hd-inst"/><text x="326" y="172" class="note">a new task only</text>
+<path id="b2" d="M428 294 H 476" class="ln ln-ink"/><path d="M468 288 L480 294 L468 300 Z" class="hd-ink"/>
+<line x1="468" y1="372" x2="648" y2="372" class="ground"/>
+<rect x="498" y="350" width="48" height="22" rx="3" class="base"/>
+<line x1="522" y1="350" x2="510" y2="262" class="link"/>
+<g><animateTransform attributeName="transform" type="rotate" dur="2.4s" repeatCount="indefinite" values="0 510 262;-9 510 262;0 510 262" keyTimes="0;0.5;1"/><line x1="510" y1="262" x2="594" y2="232" class="link"/><circle cx="594" cy="232" r="6" class="joint"/>
+<path d="M594 238 V252 M582 252 H606 M582 252 V268 M606 252 V268" class="grip"/></g>
+<circle cx="522" cy="350" r="6" class="joint"/><circle cx="510" cy="262" r="6" class="joint"/>
+<rect x="604" y="352" width="24" height="20" rx="2" class="obj"/>
+<circle r="7" fill="#a8742a" opacity="0"><animateMotion dur="6s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.05;0.22;1"><mpath href="#b1"/></animateMotion><animate attributeName="opacity" dur="6s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.04;0.05;0.22;0.24;1"/></circle>
+<circle r="5" fill="#6d7179" opacity="0"><animateMotion dur="1.2s" begin="0.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1"><mpath href="#b2"/></animateMotion><animate attributeName="opacity" dur="1.2s" begin="0.0s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.05;0.7;0.75;1"/></circle>
+<circle r="5" fill="#6d7179" opacity="0"><animateMotion dur="1.2s" begin="0.4s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1"><mpath href="#b2"/></animateMotion><animate attributeName="opacity" dur="1.2s" begin="0.4s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.05;0.7;0.75;1"/></circle>
+<circle r="5" fill="#6d7179" opacity="0"><animateMotion dur="1.2s" begin="0.8s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1"><mpath href="#b2"/></animateMotion><animate attributeName="opacity" dur="1.2s" begin="0.8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.05;0.7;0.75;1"/></circle>
+</svg>
+        </div>
+      </div>
+      <div class="row row-c">
+        <div class="row-text">
+          <h3>(c) RoboThink</h3>
+          <p>The agent thinks and the policy acts. <span class="tok inst">[INST]</span> tells the policy what to do: the agent rewrites the instruction, and the robot first undoes its own motion, with no training. <span class="tok fb">[FB]</span> tells it how to move: it is taught from the agent alone and read only by the action module, while the world module keeps the plain instruction.</p>
+          <p class="row-v"><b class="ok">✓ The agent thinks, the policy acts.</b> 55 s and 8k tokens per success.</p>
+        </div>
+        <div class="row-fig">
+<svg class="dia2" viewBox="0 0 660 384" role="img" aria-label="Diagram (c)">
+<g transform="translate(26,30)">
+  <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/><circle cx="36" cy="2" r="4.5" class="ag-fill"/>
+  <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
+  <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
+  <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
+  <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
+  <path d="M27 52 q9 7 18 0" class="mouth"/></g>
+<text x="62" y="122" text-anchor="middle" class="ag-label">reasoning agent</text>
+<rect x="128" y="22" width="372" height="80" rx="12" class="bubble2 b-rt"/><text x="150" y="55"><tspan class="t-inst t-tok">[INST]</tspan><tspan class="t-inst"> fetch the milk</tspan></text><text x="150" y="85"><tspan class="t-fb t-tok">[FB]</tspan><tspan class="t-fb"> push right, slightly</tspan></text>
+<g class="policy"><rect x="34" y="226" width="392" height="146" rx="12" class="pol-box rt"/>
+<rect x="60" y="250" width="144" height="52" rx="10" class="mod world rtw"/><text x="132" y="282" text-anchor="middle" class="mod-t">world</text>
+<rect x="256" y="250" width="144" height="52" rx="10" class="mod action rta"/><text x="328" y="282" text-anchor="middle" class="mod-t">action</text>
+<line x1="206" y1="276" x2="246" y2="276" class="thin"/><path d="M246 271 l8 5 l-8 5z" class="thin-head"/>
+<text x="230" y="358" text-anchor="middle" class="pol-t">robot policy</text><text x="132" y="322" text-anchor="middle" class="sub">frozen</text><text x="328" y="322" text-anchor="middle" class="sub sub-fb">trained</text></g>
+<path id="c1" d="M232 102 V 160 H 132 V 246" class="ln ln-inst"/><path id="c2" d="M232 102 V 160 H 300 V 246" class="ln ln-inst"/><path d="M126 238 L132 250 L138 238 Z" class="hd-inst"/><path d="M294 238 L300 250 L306 238 Z" class="hd-inst"/>
+<path id="c3" d="M372 102 V 246" class="ln ln-fb"/><path d="M366 238 L372 250 L378 238 Z" class="hd-fb"/><text x="384" y="178" class="note note-fb">learned</text>
+<path id="c4" d="M428 294 H 476" class="ln ln-ink"/><path d="M468 288 L480 294 L468 300 Z" class="hd-ink"/>
+<line x1="468" y1="372" x2="648" y2="372" class="ground"/>
+<rect x="498" y="350" width="48" height="22" rx="3" class="base"/>
+<line x1="522" y1="350" x2="510" y2="262" class="link"/>
+<g><animateTransform attributeName="transform" type="rotate" dur="2.4s" repeatCount="indefinite" values="0 510 262;-9 510 262;0 510 262" keyTimes="0;0.5;1"/><line x1="510" y1="262" x2="594" y2="232" class="link"/><circle cx="594" cy="232" r="6" class="joint"/>
+<path d="M594 238 V252 M582 252 H606 M582 252 V268 M606 252 V268" class="grip"/></g>
+<circle cx="522" cy="350" r="6" class="joint"/><circle cx="510" cy="262" r="6" class="joint"/>
+<rect x="604" y="352" width="24" height="20" rx="2" class="obj"/>
+<circle r="7" fill="#a8742a" opacity="0"><animateMotion dur="6s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.05;0.25;1"><mpath href="#c1"/></animateMotion><animate attributeName="opacity" dur="6s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.04;0.05;0.25;0.27;1"/></circle>
+<circle r="7" fill="#a8742a" opacity="0"><animateMotion dur="6s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.05;0.25;1"><mpath href="#c2"/></animateMotion><animate attributeName="opacity" dur="6s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.04;0.05;0.25;0.27;1"/></circle>
+<circle r="7" fill="#3f6a9e" opacity="0"><animateMotion dur="6s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.05;0.25;1"><mpath href="#c3"/></animateMotion><animate attributeName="opacity" dur="6s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.04;0.05;0.25;0.27;1"/></circle>
+<rect x="256" y="250" width="144" height="52" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.24;0.28;0.45;1"/></rect>
+<circle r="5" fill="#6d7179" opacity="0"><animateMotion dur="1.2s" begin="0.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1"><mpath href="#c4"/></animateMotion><animate attributeName="opacity" dur="1.2s" begin="0.0s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.05;0.7;0.75;1"/></circle>
+<circle r="5" fill="#6d7179" opacity="0"><animateMotion dur="1.2s" begin="0.4s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1"><mpath href="#c4"/></animateMotion><animate attributeName="opacity" dur="1.2s" begin="0.4s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.05;0.7;0.75;1"/></circle>
+<circle r="5" fill="#6d7179" opacity="0"><animateMotion dur="1.2s" begin="0.8s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.7;1"><mpath href="#c4"/></animateMotion><animate attributeName="opacity" dur="1.2s" begin="0.8s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.05;0.7;0.75;1"/></circle>
+</svg>
         </div>
       </div>
     </div>
@@ -546,144 +505,51 @@ sub.m { font-style: italic; font-size: .72em; }
     <h2>Teaching the policy to listen</h2>
     <div class="prose">
       <p>A policy does not follow “push right, slightly” on its own: it reacts to the presence of the text, not to what
-        it says. We teach it from the agent alone. Scroll to follow one training state from the rollout to the update.</p>
+        it says. We teach it from the agent alone, in three stages.</p>
     </div>
-    <div class="tscroll" id="tscroll">
-      <div class="tstage">
-        <div class="tview" id="tview">
-          <svg class="tdia t1" id="tdia" viewBox="0 0 1000 410" role="img" aria-labelledby="tdiaTitle">
-            <title id="tdiaTitle">Training the feedback channel: rollouts, training samples and fine-tuning</title>
-            <defs>
-              <marker id="ahGrey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8f949c"/></marker>
-              <marker id="ahBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4d70a8"/></marker>
-              <marker id="ahAgent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6b5aa6"/></marker>
-            </defs>
-            <!-- column titles -->
-            <text x="14" y="22" class="ttl"><tspan class="ttl-b">Rollouts</tspan>: training tasks and drifts</text>
-            <text x="304" y="22" class="ttl from2"><tspan class="ttl-b">Training samples</tspan>: one state, three feedbacks</text>
-            <text x="800" y="22" class="ttl from4"><tspan class="ttl-b">Fine-tuning</tspan>, own loss</text>
-
-            <!-- ===== column 1: rollouts ===== -->
-            <g class="col1">
-              <g class="from2">
-                <g transform="translate(36,48) scale(.86)">
-                  <line x1="36" y1="2" x2="36" y2="14" class="ag-line"/>
-                  <circle cx="36" cy="2" r="4.5" class="ag-fill"/>
-                  <rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/>
-                  <rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/>
-                  <rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/>
-                  <circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/>
-                  <circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/>
-                  <path d="M27 52 q9 7 18 0" class="mouth"/>
-                </g>
-                <text x="67" y="128" text-anchor="middle" class="ag-label">reasoning agent</text>
-                <rect x="118" y="62" width="172" height="40" rx="10" class="t-bubble"/>
-                <text x="204" y="88" text-anchor="middle" class="fb-say">“push right, slightly”</text>
-                <path d="M 24 352 V 92 H 32" class="watch" marker-end="url(#ahAgent)"/>
-                <g class="hide1"><text x="122" y="176" class="small">executes the plan</text>
-                <text x="122" y="196" class="small">corrected by the agent:</text>
-                <text x="122" y="220" class="small"><tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text></g>
-              </g>
-              <g class="only1">
-                <text x="150" y="196" class="small">the policy plans <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text>
-                <text x="150" y="216" class="small"><tspan dy="0">for the plain instruction </tspan><tspan class="m">ℓ</tspan></text>
-              </g>
-              <line x1="10" y1="396" x2="282" y2="396" class="ground"/>
-              <rect x="42" y="372" width="56" height="24" rx="3" class="base"/>
-              <line x1="70" y1="372" x2="84" y2="284" class="link"/>
-              <g class="forearm">
-                <line x1="84" y1="284" x2="174" y2="258" class="link"/>
-                <circle cx="174" cy="258" r="6" class="joint"/>
-                <path d="M174 264 V278 M161 278 H187 M161 278 V295 M187 278 V295" class="grip"/>
-              </g>
-              <circle cx="70" cy="372" r="6" class="joint"/><circle cx="84" cy="284" r="6" class="joint"/>
-              <rect x="214" y="376" width="30" height="20" rx="2" class="obj"/>
-              <g class="only1">
-                <path d="M 196 300 C 222 314, 236 330, 238 350" class="drift-a" marker-end="url(#ahGrey)"/>
-                <text x="242" y="344" class="small drift-t">drift</text>
-              </g>
-            </g>
-            <path d="M 292 226 H 300" class="arrow a12" marker-end="url(#ahGrey)" pathLength="1"/>
-
-            <!-- ===== column 2: three training samples of one state ===== -->
-            <g class="col2">
-              <g class="card c1">
-                <rect x="304" y="44" width="472" height="88" rx="10" class="card-box"/>
-                <rect x="318" y="58" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="72" width="7" height="34" class="thumb-bar"/><rect x="356" y="100" width="14" height="9" class="thumb-obj"/>
-                <text x="394" y="80"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text>
-                <text x="394" y="110"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push right, slightly”</tspan></text>
-                <text x="606" y="80" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text>
-                <text x="606" y="110" class="c-n">the agent’s feedback</text>
-              </g>
-              <g class="card c2">
-                <rect x="304" y="160" width="472" height="88" rx="10" class="card-box"/>
-                <rect x="318" y="174" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="188" width="7" height="34" class="thumb-bar"/><rect x="356" y="216" width="14" height="9" class="thumb-obj"/>
-                <text x="394" y="196"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text>
-                <text x="394" y="226"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push up, strongly”</tspan></text>
-                <text x="606" y="196" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.6" dy="-8">˜</tspan></text>
-                <text x="606" y="226" class="c-n">counterfactual (<tspan class="m">p</tspan> = 0.5)</text>
-              </g>
-              <g class="card c3">
-                <rect x="304" y="276" width="472" height="88" rx="10" class="card-box"/>
-                <rect x="318" y="290" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="304" width="7" height="34" class="thumb-bar"/><rect x="356" y="332" width="14" height="9" class="thumb-obj"/>
-                <text x="394" y="312"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text>
-                <text x="394" y="342"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “none”</tspan></text>
-                <text x="606" y="312" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text>
-                <text x="606" y="342" class="c-n">no feedback (<tspan class="m">p</tspan> = 0.1)</text>
-              </g>
-              <text x="540" y="394" text-anchor="middle" class="small same from3">the same state each time</text>
-            </g>
-            <path d="M 780 226 H 796" class="arrow a23" marker-end="url(#ahBlue)" pathLength="1"/>
-
-            <!-- ===== column 3: the policy ===== -->
-            <g class="col3 from4">
-              <rect x="800" y="40" width="194" height="330" rx="12" class="p-box"/>
-              <text x="897" y="70" text-anchor="middle" class="p-title">robot policy</text>
-              <rect x="814" y="88" width="166" height="86" rx="9" class="p-mod"/>
-              <text x="885" y="122" text-anchor="middle" class="p-t">world module</text>
-              <text x="885" y="148" text-anchor="middle" class="p-t">frozen, plain <tspan class="m">ℓ</tspan></text>
-              <g transform="translate(950,112)" class="lock"><path d="M3 12 V7 a6 6 0 0 1 12 0 V12" fill="none" stroke="#6d7179" stroke-width="2.4"/><rect x="0" y="11" width="18" height="15" rx="3" fill="#6d7179"/></g>
-              <path d="M 897 176 V 210" class="thin-a" marker-end="url(#ahGrey)"/>
-              <rect x="814" y="216" width="166" height="120" rx="9" class="p-mod p-act"/>
-              <text x="897" y="250" text-anchor="middle" class="p-t">action module</text>
-              <text x="897" y="276" text-anchor="middle" class="p-t">+ role tokens</text>
-              <text x="897" y="310" text-anchor="middle" class="p-trained">trained</text>
-            </g>
-          </svg>
-        </div>
-        <div class="tcap" aria-live="polite">
-          <div class="tcap-item on" data-for="1">
-            <h3>Rollouts on the training tasks</h3>
-            <p>On the training tasks, a drift from a training distribution is added to every motion command. The policy
-              plans its chunk <i class="m">a</i><sub class="m">k</sub> for the plain instruction <i class="m">ℓ</i>, and the drift pulls the hand away.</p>
-          </div>
-          <div class="tcap-item" data-for="2">
-            <h3>The agent is the teacher</h3>
-            <p>After chunks 1, 2 and 3 and then every four chunks, the agent estimates the drift <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub> from the frames
-              and the commanded versus actual motion, and renders it as feedback: “push right, slightly”. The robot
-              executes its own plan corrected by the estimate, <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>, and every step is stored with the
-              feedback in force.</p>
-          </div>
-          <div class="tcap-item" data-for="3">
-            <h3>Counterfactual feedback</h3>
-            <p>Each state carries the one estimate the agent happened to make, so the policy could fit the target from the
-              state alone. With <i class="m">p</i> = 0.5 a clip instead gets the feedback of another drift <i class="m acc-h" data-a="˜">δ</i> and the target
-              <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="˜">δ</i>, and with <i class="m">p</i> = 0.1 “none” and the plain plan. The same state now needs different moves
-              for different feedback, which only reading the feedback can fit. The true drift is never used.</p>
-          </div>
-          <div class="tcap-item" data-for="4">
-            <h3>Fine-tuning the action module</h3>
-            <p>Only the action module and the role tokens are trained, with the policy’s own loss. The world module stays
-              frozen and keeps the plain instruction, so the feedback never distorts what it imagines. The policy then
-              moves as the feedback says, and the other way for the opposite feedback.</p>
-          </div>
-        </div>
-        <div class="seg stepper" role="group" aria-label="Training step">
-          <button type="button" data-tgo="1" aria-pressed="true">Rollouts</button>
-          <button type="button" data-tgo="2" aria-pressed="false">Agent</button>
-          <button type="button" data-tgo="3" aria-pressed="false">Counterfactual</button>
-          <button type="button" data-tgo="4" aria-pressed="false">Fine-tuning</button>
-        </div>
+    <div class="tfig">
+      <div class="tview">
+<svg class="tdia2" viewBox="0 0 1000 410" role="img" aria-labelledby="tdiaTitle">
+<title id="tdiaTitle">Training the feedback channel: rollouts, training samples and fine-tuning</title>
+<text x="14" y="22" class="ttl"><tspan class="ttl-b">1. Rollouts</tspan>: training tasks and drifts</text>
+<text x="304" y="22" class="ttl"><tspan class="ttl-b">2. Training samples</tspan>: one state, three feedbacks</text>
+<text x="800" y="22" class="ttl"><tspan class="ttl-b">3. Fine-tuning</tspan>, own loss</text>
+<g transform="translate(36,48) scale(.86)"><line x1="36" y1="2" x2="36" y2="14" class="ag-line"/><circle cx="36" cy="2" r="4.5" class="ag-fill"/><rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/><circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/><circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/><path d="M27 52 q9 7 18 0" class="mouth"/></g>
+<text x="67" y="128" text-anchor="middle" class="ag-label">reasoning agent</text>
+<rect x="118" y="62" width="172" height="40" rx="10" class="t-bubble"/><text x="204" y="88" text-anchor="middle" class="fb-say">“push right, slightly”</text>
+<rect x="118" y="62" width="172" height="40" rx="10" class="glow-agent" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.27;0.31;0.42;1"/></rect>
+<path id="tw" d="M 24 352 V 92 H 30" class="watch"/><path d="M28 87 L38 92 L28 97 Z" class="hd-agent"/>
+<text x="122" y="176" class="small">executes the plan</text><text x="122" y="196" class="small">corrected by the agent:</text>
+<text x="122" y="220" class="small"><tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text>
+<line x1="10" y1="396" x2="282" y2="396" class="ground"/><rect x="42" y="372" width="56" height="24" rx="3" class="base"/>
+<line x1="70" y1="372" x2="84" y2="284" class="link"/>
+<g><animateTransform attributeName="transform" type="rotate" dur="8s" repeatCount="indefinite" values="0 84 284;13 84 284;13 84 284;0 84 284;0 84 284" keyTimes="0;0.13;0.3;0.42;1"/><line x1="84" y1="284" x2="174" y2="258" class="link"/><circle cx="174" cy="258" r="6" class="joint"/><path d="M174 264 V278 M161 278 H187 M161 278 V295 M187 278 V295" class="grip"/></g>
+<circle cx="70" cy="372" r="6" class="joint"/><circle cx="84" cy="284" r="6" class="joint"/><rect x="214" y="376" width="30" height="20" rx="2" class="obj"/>
+<g opacity=".2"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values=".2;1;1;.2;.2" keyTimes="0;0.13;0.3;0.42;1"/><path d="M 196 300 C 222 314, 236 330, 238 350" class="drift-a"/><path d="M233 344 L238 354 L243 344 Z" fill="#8f949c"/><text x="246" y="344" class="small drift-t">drift</text></g>
+<path id="t12" d="M 250 250 H 300" class="ln ln-ink"/><path d="M294 244 L304 250 L294 256 Z" class="hd-ink"/>
+<g><rect x="304" y="44" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="58" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="72" width="7" height="34" class="thumb-bar"/><rect x="356" y="100" width="14" height="9" class="thumb-obj"/><text x="394" y="80"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="110"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push right, slightly”</tspan></text><text x="606" y="80" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text><text x="606" y="110" class="c-n">the agent’s feedback</text><rect x="304" y="44" width="472" height="88" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.44;0.48;0.62;1"/></rect></g>
+<g><rect x="304" y="160" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="174" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="188" width="7" height="34" class="thumb-bar"/><rect x="356" y="216" width="14" height="9" class="thumb-obj"/><text x="394" y="196"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="226"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push up, strongly”</tspan></text><text x="606" y="196" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.6" dy="-8">˜</tspan></text><text x="606" y="226" class="c-n">counterfactual (<tspan class="m">p</tspan> = 0.5)</text><rect x="304" y="160" width="472" height="88" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.49;0.53;0.66;1"/></rect></g>
+<g><rect x="304" y="276" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="290" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="304" width="7" height="34" class="thumb-bar"/><rect x="356" y="332" width="14" height="9" class="thumb-obj"/><text x="394" y="312"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="342"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “none”</tspan></text><text x="606" y="312" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text><text x="606" y="342" class="c-n">no feedback (<tspan class="m">p</tspan> = 0.1)</text><rect x="304" y="276" width="472" height="88" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.54;0.58;0.7;1"/></rect></g>
+<text x="540" y="394" text-anchor="middle" class="small same">the same state each time</text>
+<path id="t23" d="M 778 226 H 812" class="ln ln-fb"/><path d="M806 220 L816 226 L806 232 Z" class="hd-fb"/>
+<rect x="800" y="40" width="194" height="330" rx="12" class="p-box"/><text x="897" y="70" text-anchor="middle" class="p-title">robot policy</text>
+<rect x="814" y="88" width="166" height="86" rx="9" class="p-mod"/><text x="885" y="122" text-anchor="middle" class="p-t">world module</text>
+<text x="885" y="148" text-anchor="middle" class="p-t">frozen, plain <tspan class="m">ℓ</tspan></text>
+<g transform="translate(950,112)"><path d="M3 12 V7 a6 6 0 0 1 12 0 V12" fill="none" stroke="#6d7179" stroke-width="2.4"/><rect x="0" y="11" width="18" height="15" rx="3" fill="#6d7179"/></g>
+<path d="M 897 176 V 210" class="thin-a"/><path d="M892 204 L897 214 L902 204 Z" fill="#8f949c"/>
+<rect x="814" y="216" width="166" height="120" rx="9" class="p-mod p-act"/>
+<rect x="814" y="216" width="166" height="120" rx="9" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8;0.84;0.93;0.98;1"/></rect>
+<text x="897" y="250" text-anchor="middle" class="p-t">action module</text><text x="897" y="276" text-anchor="middle" class="p-t">+ role tokens</text>
+<text x="897" y="310" text-anchor="middle" class="p-trained">trained</text>
+<circle r="6" fill="#6b5aa6" opacity="0"><animateMotion dur="8s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.13;0.27;1"><mpath href="#tw"/></animateMotion><animate attributeName="opacity" dur="8s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.12;0.13;0.27;0.29;1"/></circle>
+<circle r="6" fill="#6d7179" opacity="0"><animateMotion dur="8s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.36;0.44;1"><mpath href="#t12"/></animateMotion><animate attributeName="opacity" dur="8s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.35;0.36;0.44;0.46;1"/></circle>
+<circle r="6" fill="#3f6a9e" opacity="0"><animateMotion dur="8s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.72;0.82;1"><mpath href="#t23"/></animateMotion><animate attributeName="opacity" dur="8s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.71;0.72;0.82;0.84;1"/></circle>
+</svg>
+      </div>
+      <div class="tcols">
+        <div><h3>1. Rollouts</h3><p>On the training tasks, a drift pulls the hand away. After chunks 1, 2 and 3 and then every four chunks, the agent estimates the drift <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub> and says it as feedback. The robot executes its own plan corrected by the estimate, <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>, and every step is stored with the feedback in force.</p></div>
+        <div><h3>2. Training samples</h3><p>Each state appears with three feedbacks: the agent’s, with target <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>; a counterfactual one from another drift <i class="m acc-h" data-a="˜">δ</i> (<i class="m">p</i> = 0.5), with target <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="˜">δ</i>; and none (<i class="m">p</i> = 0.1), with the plain plan. Only reading the feedback fits them all. The true drift is never used.</p></div>
+        <div><h3>3. Fine-tuning</h3><p>Only the action module and the role tokens are trained, with the policy’s own loss. The world module stays frozen and keeps the plain instruction.</p></div>
       </div>
     </div>
     <figure>
@@ -948,70 +814,19 @@ sub.m { font-style: italic; font-size: .72em; }
   raf = requestAnimationFrame(tick);
 })();
 
-(() => {
-  const dia = document.getElementById("dia");
-  if (!dia) return;
-  const steps = [...document.querySelectorAll(".step")];
-  const buttons = [...document.querySelectorAll("[data-go]")];
-  const verdicts = [...document.querySelectorAll(".layer-t")];
-  let cur = 0;
-  function show(n) {
-    if (n === cur) return;
-    cur = n;
-    dia.setAttribute("class", "dia s" + n);
-    steps.forEach((s) => s.classList.toggle("on", +s.dataset.step === n));
-    buttons.forEach((b) => b.setAttribute("aria-pressed", +b.dataset.go === n));
-    verdicts.forEach((v) => v.classList.toggle("on", +v.dataset.for === n));
-  }
-  show(1);
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver((es) => {
-      es.forEach((e) => { if (e.isIntersecting) show(+e.target.dataset.step); });
-    }, { rootMargin: window.matchMedia("(max-width: 760px)").matches ? "-62% 0px -30% 0px" : "-45% 0px -45% 0px" });
-    steps.forEach((s) => io.observe(s));
-  }
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  buttons.forEach((b) => b.addEventListener("click", () => {
-    const n = +b.dataset.go;
-    show(n);
-    steps[n - 1].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
-  }));
-  steps.forEach((s) => s.addEventListener("click", () => show(+s.dataset.step)));
-})();
+
 
 (() => {
-  const box = document.getElementById("tscroll"), dia = document.getElementById("tdia"), view = document.getElementById("tview");
-  if (!box || !dia) return;
-  const N = 4, caps = [...document.querySelectorAll(".tcap-item")], btns = [...document.querySelectorAll("[data-tgo]")];
-  const focusX = [150, 300, 540, 890];
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let cur = 0;
-  function show(n) {
-    if (n === cur) return;
-    cur = n;
-    dia.setAttribute("class", "tdia t" + n);
-    caps.forEach((c) => c.classList.toggle("on", +c.dataset.for === n));
-    btns.forEach((b) => b.setAttribute("aria-pressed", +b.dataset.tgo === n));
-    if (view.scrollWidth > view.clientWidth + 4) {
-      const x = focusX[n - 1] / 1000 * view.scrollWidth - view.clientWidth / 2;
-      view.scrollTo({ left: Math.max(0, x), behavior: reduce ? "auto" : "smooth" });
-    }
+  // looping diagrams: pause for reduced motion, and while off screen
+  const svgs = [...document.querySelectorAll(".dia2, .tdia2")];
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { svgs.forEach((g) => g.pauseAnimations && g.pauseAnimations()); return; }
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.target.pauseAnimations) return;
+      e.isIntersecting ? e.target.unpauseAnimations() : e.target.pauseAnimations();
+    }));
+    svgs.forEach((g) => io.observe(g));
   }
-  function onScroll() {
-    const r = box.getBoundingClientRect(), span = r.height - window.innerHeight;
-    const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
-    show(Math.min(N, Math.floor(p * N) + 1));
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll);
-  btns.forEach((b) => b.addEventListener("click", () => {
-    const n = +b.dataset.tgo, r = box.getBoundingClientRect(), span = r.height - window.innerHeight;
-    const top = window.scrollY + r.top + span * (n - 0.5) / N;
-    window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
-    show(n);
-  }));
-  onScroll();
-  if (!cur) show(1);
 })();
 </script>
 </body>
