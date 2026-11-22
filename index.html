@@ -267,6 +267,35 @@ sub.m { font-style: italic; font-size: .72em; }
 .p-t { font-size: 15px; fill: var(--ink); }
 .p-trained { font-size: 16px; font-weight: 750; fill: var(--fb); }
 .thin-a { fill: none; stroke: #8f949c; stroke-width: 1.6; }
+
+/* Fig. 2 step player */
+.stage-p { fill: #fbfbfd; stroke: #e3e5ec; stroke-width: 1.5; transition: fill .45s, stroke .45s, stroke-width .45s; }
+.stage-p.cur { fill: #f5f3fb; stroke: var(--agent); stroke-width: 2.6; }
+.stage-p.fut { fill: #fcfcfd; stroke: #eef0f4; }
+.badge circle { fill: var(--agent); transition: fill .45s; }
+.badge text { fill: #fff; font-size: 13px; font-weight: 700; }
+.badge.fut circle { fill: #c9ccd4; }
+.tdia2 [data-ph] { transition: opacity .55s ease; }
+.tdia2 [data-ph].fut { opacity: .14; }
+.forearm2 { transform-box: view-box; transform-origin: 84px 284px; transition: transform .9s cubic-bezier(.3,.7,.2,1); }
+.tdia2.p1 .forearm2 { transform: rotate(13deg); }
+.drift2 { opacity: .3; transition: opacity .5s; }
+.tdia2.p1 .drift2 { opacity: 1; }
+.ln2 { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 7 6; }
+.ln2.go, .watch.go { animation: march 1.1s linear infinite; }
+.watch { animation: none; }
+.watch.go { animation-direction: reverse; }
+.card2 { transition: opacity .55s ease, transform .7s cubic-bezier(.3,.7,.2,1); }
+.pulse { fill: none; stroke: var(--fb); stroke-width: 4; opacity: 0; transition: opacity .4s; }
+.card2.flash .pulse { opacity: 1; }
+.p-act2 { transition: fill .5s; }
+.tdia2.p5 .p-act2, .tdia2.p6 .p-act2 { fill: #d9e7fa; stroke: var(--fb); stroke-width: 2.6; }
+.trained2 { opacity: 0; transition: opacity .5s .4s; }
+.tdia2.p5 .trained2, .tdia2.p6 .trained2 { opacity: 1; }
+.tcols > div { transition: opacity .45s; }
+.tcols > div.fut { opacity: .32; }
+.tcols > div.cur h3 { color: var(--agent); }
+.tcols > div:not(.cur) h3 { color: var(--ink-2); }
 .tcols { display: grid; grid-template-columns: 3fr 4.7fr 2.3fr; gap: 1.5rem; margin-top: 1.25rem; }
 .tcols h3 { font-size: 1.05rem; color: var(--agent); }
 .tcols p { margin: 0; font-size: .97rem; }
@@ -508,48 +537,35 @@ sub.m { font-style: italic; font-size: .72em; }
         it says. We teach it from the agent alone, in three stages.</p>
     </div>
     <div class="tfig">
-      <div class="tview">
-<svg class="tdia2" viewBox="0 0 1000 410" role="img" aria-labelledby="tdiaTitle">
+      <div class="tview" id="tview">
+<svg class="tdia2" id="tdia" viewBox="0 0 1000 412" role="img" aria-labelledby="tdiaTitle">
 <title id="tdiaTitle">Training the feedback channel: rollouts, training samples and fine-tuning</title>
-<text x="14" y="22" class="ttl"><tspan class="ttl-b">1. Rollouts</tspan>: training tasks and drifts</text>
-<text x="304" y="22" class="ttl"><tspan class="ttl-b">2. Training samples</tspan>: one state, three feedbacks</text>
-<text x="800" y="22" class="ttl"><tspan class="ttl-b">3. Fine-tuning</tspan>, own loss</text>
-<g transform="translate(36,48) scale(.86)"><line x1="36" y1="2" x2="36" y2="14" class="ag-line"/><circle cx="36" cy="2" r="4.5" class="ag-fill"/><rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/><circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/><circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/><path d="M27 52 q9 7 18 0" class="mouth"/></g>
-<text x="67" y="128" text-anchor="middle" class="ag-label">reasoning agent</text>
-<rect x="118" y="62" width="172" height="40" rx="10" class="t-bubble"/><text x="204" y="88" text-anchor="middle" class="fb-say">“push right, slightly”</text>
-<rect x="118" y="62" width="172" height="40" rx="10" class="glow-agent" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.27;0.31;0.42;1"/></rect>
-<path id="tw" d="M 24 352 V 92 H 30" class="watch"/><path d="M28 87 L38 92 L28 97 Z" class="hd-agent"/>
-<text x="122" y="176" class="small">executes the plan</text><text x="122" y="196" class="small">corrected by the agent:</text>
-<text x="122" y="220" class="small"><tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text>
-<line x1="10" y1="396" x2="282" y2="396" class="ground"/><rect x="42" y="372" width="56" height="24" rx="3" class="base"/>
-<line x1="70" y1="372" x2="84" y2="284" class="link"/>
-<g><animateTransform attributeName="transform" type="rotate" dur="8s" repeatCount="indefinite" values="0 84 284;13 84 284;13 84 284;0 84 284;0 84 284" keyTimes="0;0.13;0.3;0.42;1"/><line x1="84" y1="284" x2="174" y2="258" class="link"/><circle cx="174" cy="258" r="6" class="joint"/><path d="M174 264 V278 M161 278 H187 M161 278 V295 M187 278 V295" class="grip"/></g>
-<circle cx="70" cy="372" r="6" class="joint"/><circle cx="84" cy="284" r="6" class="joint"/><rect x="214" y="376" width="30" height="20" rx="2" class="obj"/>
-<g opacity=".2"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values=".2;1;1;.2;.2" keyTimes="0;0.13;0.3;0.42;1"/><path d="M 196 300 C 222 314, 236 330, 238 350" class="drift-a"/><path d="M233 344 L238 354 L243 344 Z" fill="#8f949c"/><text x="246" y="344" class="small drift-t">drift</text></g>
-<path id="t12" d="M 250 250 H 300" class="ln ln-ink"/><path d="M294 244 L304 250 L294 256 Z" class="hd-ink"/>
-<g><rect x="304" y="44" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="58" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="72" width="7" height="34" class="thumb-bar"/><rect x="356" y="100" width="14" height="9" class="thumb-obj"/><text x="394" y="80"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="110"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push right, slightly”</tspan></text><text x="606" y="80" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text><text x="606" y="110" class="c-n">the agent’s feedback</text><rect x="304" y="44" width="472" height="88" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.44;0.48;0.62;1"/></rect></g>
-<g><rect x="304" y="160" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="174" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="188" width="7" height="34" class="thumb-bar"/><rect x="356" y="216" width="14" height="9" class="thumb-obj"/><text x="394" y="196"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="226"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push up, strongly”</tspan></text><text x="606" y="196" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.6" dy="-8">˜</tspan></text><text x="606" y="226" class="c-n">counterfactual (<tspan class="m">p</tspan> = 0.5)</text><rect x="304" y="160" width="472" height="88" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.49;0.53;0.66;1"/></rect></g>
-<g><rect x="304" y="276" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="290" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="304" width="7" height="34" class="thumb-bar"/><rect x="356" y="332" width="14" height="9" class="thumb-obj"/><text x="394" y="312"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="342"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “none”</tspan></text><text x="606" y="312" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text><text x="606" y="342" class="c-n">no feedback (<tspan class="m">p</tspan> = 0.1)</text><rect x="304" y="276" width="472" height="88" rx="10" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;0;0" keyTimes="0;0.54;0.58;0.7;1"/></rect></g>
-<text x="540" y="394" text-anchor="middle" class="small same">the same state each time</text>
-<path id="t23" d="M 778 226 H 812" class="ln ln-fb"/><path d="M806 220 L816 226 L806 232 Z" class="hd-fb"/>
-<rect x="800" y="40" width="194" height="330" rx="12" class="p-box"/><text x="897" y="70" text-anchor="middle" class="p-title">robot policy</text>
-<rect x="814" y="88" width="166" height="86" rx="9" class="p-mod"/><text x="885" y="122" text-anchor="middle" class="p-t">world module</text>
-<text x="885" y="148" text-anchor="middle" class="p-t">frozen, plain <tspan class="m">ℓ</tspan></text>
-<g transform="translate(950,112)"><path d="M3 12 V7 a6 6 0 0 1 12 0 V12" fill="none" stroke="#6d7179" stroke-width="2.4"/><rect x="0" y="11" width="18" height="15" rx="3" fill="#6d7179"/></g>
-<path d="M 897 176 V 210" class="thin-a"/><path d="M892 204 L897 214 L902 204 Z" fill="#8f949c"/>
-<rect x="814" y="216" width="166" height="120" rx="9" class="p-mod p-act"/>
-<rect x="814" y="216" width="166" height="120" rx="9" class="glow" opacity="0"><animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8;0.84;0.93;0.98;1"/></rect>
-<text x="897" y="250" text-anchor="middle" class="p-t">action module</text><text x="897" y="276" text-anchor="middle" class="p-t">+ role tokens</text>
-<text x="897" y="310" text-anchor="middle" class="p-trained">trained</text>
-<circle r="6" fill="#6b5aa6" opacity="0"><animateMotion dur="8s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.13;0.27;1"><mpath href="#tw"/></animateMotion><animate attributeName="opacity" dur="8s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.12;0.13;0.27;0.29;1"/></circle>
-<circle r="6" fill="#6d7179" opacity="0"><animateMotion dur="8s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.36;0.44;1"><mpath href="#t12"/></animateMotion><animate attributeName="opacity" dur="8s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.35;0.36;0.44;0.46;1"/></circle>
-<circle r="6" fill="#3f6a9e" opacity="0"><animateMotion dur="8s" begin="0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.72;0.82;1"><mpath href="#t23"/></animateMotion><animate attributeName="opacity" dur="8s" begin="0s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.71;0.72;0.82;0.84;1"/></circle>
+<rect x="2" y="2" width="290" height="406" rx="12" class="stage-p" data-stage="1"/>
+<rect x="296" y="2" width="490" height="406" rx="12" class="stage-p" data-stage="2"/>
+<rect x="790" y="2" width="208" height="406" rx="12" class="stage-p" data-stage="3"/>
+<g class="badge" data-stage="1"><circle cx="24" cy="21" r="11"/><text x="24" y="26" text-anchor="middle">1</text></g>
+<text x="42" y="26" class="ttl" data-ph="1"><tspan class="ttl-b">Rollouts</tspan>: tasks and drifts</text>
+<g class="badge" data-stage="2"><circle cx="318" cy="21" r="11"/><text x="318" y="26" text-anchor="middle">2</text></g>
+<text x="336" y="26" class="ttl" data-ph="3"><tspan class="ttl-b">Training samples</tspan>: one state, three feedbacks</text>
+<g class="badge" data-stage="3"><circle cx="812" cy="21" r="11"/><text x="812" y="26" text-anchor="middle">3</text></g>
+<text x="830" y="26" class="ttl" data-ph="5"><tspan class="ttl-b">Fine-tuning</tspan>, own loss</text>
+<g data-ph="2"><g transform="translate(36,50) scale(.86)"><line x1="36" y1="2" x2="36" y2="14" class="ag-line"/><circle cx="36" cy="2" r="4.5" class="ag-fill"/><rect x="-3" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="66" y="30" width="9" height="17" rx="3" class="ag-body"/><rect x="3" y="14" width="66" height="50" rx="16" class="ag-body"/><circle cx="24" cy="36" r="8.5" class="eye"/><circle cx="26" cy="37" r="3.4" class="pupil"/><circle cx="48" cy="36" r="8.5" class="eye"/><circle cx="50" cy="37" r="3.4" class="pupil"/><path d="M27 52 q9 7 18 0" class="mouth"/></g><text x="67" y="130" text-anchor="middle" class="ag-label">reasoning agent</text><rect x="118" y="64" width="166" height="40" rx="10" class="t-bubble"/><text x="201" y="90" text-anchor="middle" class="fb-say">“push right, slightly”</text><path id="tw" d="M 22 352 V 94 H 30" class="watch"/><path d="M28 89 L38 94 L28 99 Z" class="hd-agent"/><text x="122" y="178" class="small">executes the plan</text><text x="122" y="198" class="small">corrected by the agent:</text><text x="122" y="222" class="small"><tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text></g>
+<g data-ph="1"><line x1="12" y1="396" x2="282" y2="396" class="ground"/><rect x="42" y="372" width="56" height="24" rx="3" class="base"/><line x1="70" y1="372" x2="84" y2="284" class="link"/><g class="forearm2"><line x1="84" y1="284" x2="174" y2="258" class="link"/><circle cx="174" cy="258" r="6" class="joint"/><path d="M174 264 V278 M161 278 H187 M161 278 V295 M187 278 V295" class="grip"/></g><circle cx="70" cy="372" r="6" class="joint"/><circle cx="84" cy="284" r="6" class="joint"/><rect x="214" y="376" width="30" height="20" rx="2" class="obj"/><g class="drift2"><path d="M 196 300 C 222 314, 236 330, 238 350" class="drift-a"/><path d="M233 344 L238 354 L243 344 Z" fill="#8f949c"/><text x="246" y="344" class="small drift-t">drift</text></g></g>
+<g data-ph="3"><path id="t12" d="M 250 252 H 300" class="ln2 ln-ink"/><path d="M294 246 L304 252 L294 258 Z" class="hd-ink"/></g>
+<g class="card2 c1" data-ph="3"><rect x="304" y="46" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="60" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="74" width="7" height="34" class="thumb-bar"/><rect x="356" y="102" width="14" height="9" class="thumb-obj"/><text x="394" y="82"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="112"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push right, slightly”</tspan></text><text x="606" y="82" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.2" dy="-7">ˆ</tspan><tspan class="m sub" dx="0.6" dy="11">k</tspan></text><text x="606" y="112" class="c-n">the agent’s feedback</text><rect x="304" y="46" width="472" height="88" rx="10" class="pulse"/></g>
+<g class="card2 c2" data-ph="4"><rect x="304" y="160" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="174" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="188" width="7" height="34" class="thumb-bar"/><rect x="356" y="216" width="14" height="9" class="thumb-obj"/><text x="394" y="196"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="226"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “push up, strongly”</tspan></text><text x="606" y="196" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan><tspan dy="-4"> − </tspan><tspan class="m">δ</tspan><tspan class="m acc" dx="-7.6" dy="-8">˜</tspan></text><text x="606" y="226" class="c-n">counterfactual (<tspan class="m">p</tspan> = 0.5)</text><rect x="304" y="160" width="472" height="88" rx="10" class="pulse"/></g>
+<g class="card2 c3" data-ph="4"><rect x="304" y="274" width="472" height="88" rx="10" class="card-box"/><rect x="318" y="288" width="62" height="60" rx="3" class="thumb"/><rect x="330" y="302" width="7" height="34" class="thumb-bar"/><rect x="356" y="330" width="14" height="9" class="thumb-obj"/><text x="394" y="310"><tspan class="tk-inst">[INST]</tspan><tspan class="c-t"> plain instruction </tspan><tspan class="m">ℓ</tspan></text><text x="394" y="340"><tspan class="tk-fb">[FB]</tspan><tspan class="c-fb"> “none”</tspan></text><text x="606" y="310" class="c-t">target <tspan class="m">a</tspan><tspan class="m sub" dy="4">k</tspan></text><text x="606" y="340" class="c-n">no feedback (<tspan class="m">p</tspan> = 0.1)</text><rect x="304" y="274" width="472" height="88" rx="10" class="pulse"/></g>
+<text x="540" y="394" text-anchor="middle" class="small same" data-ph="4">the same state each time</text>
+<g data-ph="5"><path id="t23" d="M 778 226 H 812" class="ln2 ln-fb"/><path d="M806 220 L816 226 L806 232 Z" class="hd-fb"/><rect x="800" y="42" width="190" height="330" rx="12" class="p-box"/><text x="895" y="72" text-anchor="middle" class="p-title">robot policy</text><rect x="812" y="90" width="166" height="86" rx="9" class="p-mod"/><text x="883" y="124" text-anchor="middle" class="p-t">world module</text><text x="883" y="150" text-anchor="middle" class="p-t">frozen, plain <tspan class="m">ℓ</tspan></text><g transform="translate(948,114)"><path d="M3 12 V7 a6 6 0 0 1 12 0 V12" fill="none" stroke="#6d7179" stroke-width="2.4"/><rect x="0" y="11" width="18" height="15" rx="3" fill="#6d7179"/></g><path d="M 895 178 V 212" class="thin-a"/><path d="M890 206 L895 216 L900 206 Z" fill="#8f949c"/><rect x="812" y="218" width="166" height="120" rx="9" class="p-mod p-act2"/><text x="895" y="252" text-anchor="middle" class="p-t">action module</text><text x="895" y="278" text-anchor="middle" class="p-t">+ role tokens</text><text x="895" y="312" text-anchor="middle" class="p-trained trained2">trained</text></g>
+<circle r="6" fill="#6b5aa6" opacity="0" class="mdot" data-path="tw"><animateMotion begin="indefinite" dur="1.1s" fill="remove"><mpath href="#tw"/></animateMotion><animate attributeName="opacity" begin="indefinite" dur="1.1s" values="1;1;0" keyTimes="0;0.85;1" fill="remove"/></circle>
+<circle r="6" fill="#6d7179" opacity="0" class="mdot" data-path="t12"><animateMotion begin="indefinite" dur="0.7s" fill="remove"><mpath href="#t12"/></animateMotion><animate attributeName="opacity" begin="indefinite" dur="0.7s" values="1;1;0" keyTimes="0;0.85;1" fill="remove"/></circle>
+<circle r="6" fill="#3f6a9e" opacity="0" class="mdot" data-path="t23"><animateMotion begin="indefinite" dur="0.7s" fill="remove"><mpath href="#t23"/></animateMotion><animate attributeName="opacity" begin="indefinite" dur="0.7s" values="1;1;0" keyTimes="0;0.85;1" fill="remove"/></circle>
 </svg>
       </div>
       <div class="tcols">
-        <div><h3>1. Rollouts</h3><p>On the training tasks, a drift pulls the hand away. After chunks 1, 2 and 3 and then every four chunks, the agent estimates the drift <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub> and says it as feedback. The robot executes its own plan corrected by the estimate, <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>, and every step is stored with the feedback in force.</p></div>
-        <div><h3>2. Training samples</h3><p>Each state appears with three feedbacks: the agent’s, with target <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>; a counterfactual one from another drift <i class="m acc-h" data-a="˜">δ</i> (<i class="m">p</i> = 0.5), with target <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="˜">δ</i>; and none (<i class="m">p</i> = 0.1), with the plain plan. Only reading the feedback fits them all. The true drift is never used.</p></div>
-        <div><h3>3. Fine-tuning</h3><p>Only the action module and the role tokens are trained, with the policy’s own loss. The world module stays frozen and keeps the plain instruction.</p></div>
+        <div data-stage="1"><h3>1. Rollouts</h3><p>On the training tasks, a drift pulls the hand away. After chunks 1, 2 and 3 and then every four chunks, the agent estimates the drift <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub> and says it as feedback. The robot executes its own plan corrected by the estimate, <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>, and every step is stored with the feedback in force.</p></div>
+        <div data-stage="2"><h3>2. Training samples</h3><p>Each state appears with three feedbacks: the agent’s, with target <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="ˆ">δ</i><sub class="m">k</sub>; a counterfactual one from another drift <i class="m acc-h" data-a="˜">δ</i> (<i class="m">p</i> = 0.5), with target <i class="m">a</i><sub class="m">k</sub> − <i class="m acc-h" data-a="˜">δ</i>; and none (<i class="m">p</i> = 0.1), with the plain plan. Only reading the feedback fits them all. The true drift is never used.</p></div>
+        <div data-stage="3"><h3>3. Fine-tuning</h3><p>Only the action module and the role tokens are trained, with the policy’s own loss. The world module stays frozen and keeps the plain instruction.</p></div>
       </div>
     </div>
     <figure>
@@ -817,16 +833,70 @@ sub.m { font-style: italic; font-size: .72em; }
 
 
 (() => {
-  // looping diagrams: pause for reduced motion, and while off screen
-  const svgs = [...document.querySelectorAll(".dia2, .tdia2")];
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { svgs.forEach((g) => g.pauseAnimations && g.pauseAnimations()); return; }
-  if ("IntersectionObserver" in window) {
+  // looping diagrams (Fig. 1): pause for reduced motion and while off screen
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const svgs = [...document.querySelectorAll(".dia2")];
+  if (reduce) svgs.forEach((g) => g.pauseAnimations && g.pauseAnimations());
+  else if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.target.pauseAnimations) return;
-      e.isIntersecting ? e.target.unpauseAnimations() : e.target.pauseAnimations();
+      if (e.target.pauseAnimations) e.isIntersecting ? e.target.unpauseAnimations() : e.target.pauseAnimations();
     }));
     svgs.forEach((g) => io.observe(g));
   }
+})();
+(() => {
+  // Fig. 2: plays its steps in a loop; the current step is outlined, future steps are grey
+  const dia = document.getElementById("tdia"), view = document.getElementById("tview");
+  if (!dia) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STAGE = [0, 1, 1, 2, 2, 3, 3];            // phase -> stage (phase 6 = hold at the end)
+  const DUR = [0, 2600, 3000, 2400, 2800, 3200, 1600];
+  const phEls = [...dia.querySelectorAll("[data-ph]")];
+  const stageEls = [...document.querySelectorAll("#tdia [data-stage], .tcols [data-stage]")];
+  const dots = Object.fromEntries([...dia.querySelectorAll(".mdot")].map((d) => [d.dataset.path, d]));
+  const lines = { 2: dia.querySelector(".watch"), 3: dia.querySelector("#t12"), 5: dia.querySelector("#t23") };
+  const focusX = [0, 150, 540, 895];
+  let ph = 0, timer = 0, visible = true, lastStage = 0;
+  function fire(id) {
+    const d = dots[id]; if (!d) return;
+    d.querySelectorAll("animateMotion, animate").forEach((a) => { try { a.beginElement(); } catch (e) {} });
+  }
+  function render(p) {
+    dia.setAttribute("class", "tdia2 p" + p);
+    phEls.forEach((el) => el.classList.toggle("fut", +el.dataset.ph > p));
+    const st = STAGE[p];
+    stageEls.forEach((el) => {
+      const k = +el.dataset.stage;
+      el.classList.toggle("cur", k === st);
+      el.classList.toggle("fut", k > st);
+    });
+    Object.entries(lines).forEach(([k, l]) => l && l.classList.toggle("go", +k === p));
+    dia.querySelectorAll(".card2").forEach((c) => c.classList.remove("flash"));
+    if (p === 2) fire("tw");
+    if (p === 3) { fire("t12"); setTimeout(() => dia.querySelector(".c1").classList.add("flash"), 650); }
+    if (p === 4) { setTimeout(() => dia.querySelector(".c2").classList.add("flash"), 500); setTimeout(() => dia.querySelector(".c3").classList.add("flash"), 900); }
+    if (p === 5) fire("t23");
+    if (st !== lastStage && view.scrollWidth > view.clientWidth + 4) {
+      view.scrollTo({ left: Math.max(0, focusX[st] / 1000 * view.scrollWidth - view.clientWidth / 2), behavior: "smooth" });
+    }
+    lastStage = st;
+  }
+  function schedule() {
+    timer = setTimeout(() => { timer = 0; if (visible) step(); }, DUR[ph]);
+  }
+  function step() {
+    ph = ph >= 6 ? 1 : ph + 1;
+    render(ph);
+    schedule();
+  }
+  if (reduce) { render(6); return; }
+  ph = 1; render(1);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((es) => {
+      visible = es[0].isIntersecting;
+      if (visible && !timer) schedule();
+    }, { threshold: 0.25 }).observe(dia);
+  } else schedule();
 })();
 </script>
 </body>
